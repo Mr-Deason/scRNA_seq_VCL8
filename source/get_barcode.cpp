@@ -9,10 +9,10 @@
 #include <set>
 #include <time.h>
 #include <omp.h>
-#include <boost\filesystem.hpp>
-#include <boost\property_tree\ptree.hpp>
-#include <boost\property_tree\json_parser.hpp>
-#include <boost\foreach.hpp>  
+#include <boost/filesystem.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/foreach.hpp>  
 #include <zlib.h>
 #include "kseq.h"
 

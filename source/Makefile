@@ -1,0 +1,1 @@
+g++ -std=c++11 -c get_barcode.cpp

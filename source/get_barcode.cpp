@@ -506,7 +506,7 @@ int main(int argc, char *argv[])
 	int border = WINDOWS[0];
 	for (int i = WINDOWS[0]; i < WINDOWS[1]; ++i)
 		if (yhat[border] > yhat[i])
-			border = i;
+			border = i;	
 
 	int num_barcodes = border;
 	int num_reads = 0;
@@ -548,6 +548,9 @@ int main(int argc, char *argv[])
 		if (dmin >= D_MIN)
 			brc_to_correct.push_back(i);
 	}
+	cout << "save" << endl;
+	fs::path save_dir(SAVE_DIR.c_str());
+	fs::create_directory(save_dir);
 	string bar_file = "barcodes.dat";
 	fp = fopen((SAVE_DIR + bar_file).c_str(), "wb");
 	for (int i = 0; i < barcodes.size(); ++i)
@@ -574,3 +577,4 @@ int main(int argc, char *argv[])
 
 	return 0;
 }
+

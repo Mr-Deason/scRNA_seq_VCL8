@@ -77,3 +77,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+/example_dataset/output/
+/example_dataset/save_dir/
+/example_dataset/TCC_output/

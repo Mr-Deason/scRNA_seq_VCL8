@@ -223,6 +223,8 @@ int main(int argc, char *argv[])
 
 	fp = fopen((SAVE_DIR+all_reads_file).c_str(), "r");
 	string umi_read_file = "umi_read_list.txt";
+	fs::path output_dir(OUTPUT_DIR.c_str());
+	fs::create_directory(output_dir);
 	FILE *fp_umi_list = fopen((OUTPUT_DIR+umi_read_file).c_str(), "wb");
 	int flag = 0;
 	for (int i = 0; i < codewords.size(); ++i)

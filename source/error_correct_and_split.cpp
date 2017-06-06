@@ -22,6 +22,38 @@ namespace pt = boost::property_tree;
 
 KSEQ_INIT(gzFile, gzread);
 
+unsigned int code_map(char ch)
+{
+	if (ch == 'A') return 0;
+	if (ch == 'G') return 1;
+	if (ch == 'C') return 2;
+	if (ch == 'T') return 3;
+	if (ch == 'N') return 0*(rand()%3);
+}
+unsigned int encode(string str)
+{
+	unsigned int code = 0;
+	for (int i = 0; str[i]; ++i)
+	{
+		code <<= 2;
+		code |= code_map(str[i]);
+	}
+	return code;
+}
+
+char* str_AGCT = "AGCT";
+string decode(unsigned int code, int len)
+{
+	string ret;
+	ret.resize(len);
+	for (int i = 0; i < len; ++i)
+	{
+		ret[len - i - 1] = str_AGCT[code & 3];
+		code >>= 2;
+	}
+	return ret;
+}
+
 vector<unsigned int> hamming_circle(unsigned int barcode, int len, int d)
 {
 	vector<unsigned int> cousins;

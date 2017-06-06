@@ -227,9 +227,9 @@ int main(int argc, char *argv[])
 	fs::create_directory(output_dir);
 	FILE *fp_umi_list = fopen((OUTPUT_DIR+umi_read_file).c_str(), "wb");
 	int flag = 0;
+	char filename[40], fastq_file[100], fastq_gz_file[100], umi_file[100];
 	for (int i = 0; i < codewords.size(); ++i)
 	{
-		char filename[40], fastq_file[40], fastq_gz_file[43], umi_file[40];
 		sprintf(filename, "cell_%04d_%s", i, decode(codewords[i], BARCODE_LENGTH).c_str());
 		//sprintf(fastq_file, "%s%s.fastq", OUTPUT_DIR.c_str(), filename);
 		sprintf(fastq_gz_file, "%s%s.fastq.gz", OUTPUT_DIR.c_str(), filename);

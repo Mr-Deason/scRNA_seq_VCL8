@@ -1,0 +1,1 @@
+./error_correct_and_split ../example_dataset/config.json

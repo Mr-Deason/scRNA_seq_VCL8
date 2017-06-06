@@ -1,0 +1,1 @@
+./compute_TCCs ../example_dataset/config.json

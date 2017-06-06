@@ -1,0 +1,1 @@
+./prep_TCC_matrix ../example_dataset/config.json

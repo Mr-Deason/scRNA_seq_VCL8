@@ -1,0 +1,1 @@
+g++ -L /usr/local/lib -std=c++11 -lz -lboost_filesystem -lboost_system -o prep_TCC_matrix prep_TCC_matrix.cpp

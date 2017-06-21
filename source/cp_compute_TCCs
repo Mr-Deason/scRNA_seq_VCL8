@@ -1,1 +1,0 @@
-g++ -L /usr/local/lib -std=c++11 -lz -lboost_filesystem -lboost_system -o compute_TCCs compute_TCCs.cpp

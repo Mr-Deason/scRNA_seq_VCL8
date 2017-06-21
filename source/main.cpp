@@ -545,7 +545,7 @@ void get_barcode()
 	for (int i = 0; i < num_barcodes; i++)
 		delete[] dist[i];
 	delete[] dist;
-};
+}
 
 vector<unsigned int> hamming_circle(unsigned int barcode, int len, int d)
 {

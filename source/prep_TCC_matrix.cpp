@@ -109,6 +109,7 @@ int main(int argc, char* argv[])
 	cout << uni_cols.size() << endl;
 	int cnt = 0;
 	int t0 = clock();
+	time_t tt0 = time(NULL);
 #pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{	
@@ -141,7 +142,7 @@ int main(int argc, char* argv[])
 		}
 	}
 	
-	cout << "time: " << (clock() - t0) << " ms" << endl;
+	cout << "time: " << (time(NULL) - tt0) << " s" << endl;
 	cout << "DONE" << endl;
 
 	return 0;

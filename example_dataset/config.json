@@ -9,7 +9,7 @@
     "BARCODE_LENGTH": 14,
     "OUTPUT_DIR": "../example_dataset/output/",
     "kallisto":{
-        "binary": "~/downloads/kallisto_linux-v0.43.1",
+        "binary": "~/downloads/kallisto_linux-v0.43.1/kallisto",
         "index": "~/downloads/Homo_sapiens.GRCh37.75.cdna.ncrna.kalisto.idx",
         "TCC_output" : "../example_dataset/TCC_output/"
     }

@@ -5,6 +5,10 @@ LD = g++ -L /usr/local/lib
 LIBS = -lz -lboost_filesystem -lboost_system
 OCFLAGS = -std=c++11
 
+
+default: all
+all: get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix
+
 get_barcode : get_barcode.o
 	$(LD) -o get_barcode $(OCFLAGS) get_barcode.o $(LIBS)
 get_barcode.o : get_barcode.cpp
@@ -21,3 +25,6 @@ prep_TCC_matrix : prep_TCC_matrix.o
 	$(LD) -o prep_TCC_matrix $(OCFLAGS) prep_TCC_matrix.o $(LIBS)
 prep_TCC_matrix.o : prep_TCC_matrix.cpp
 	$(CPP) $(OCFLAGS) -c prep_TCC_matrix.cpp
+
+clean:
+	rm get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix

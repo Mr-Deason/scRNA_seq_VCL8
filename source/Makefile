@@ -6,4 +6,4 @@ LIBS = -lz -lboost_filesystem -lboost_system
 OCFLAGS = -std=c++11
 
 get_barcode.o : get_barcode.cpp
-	$(LD) $(OCFLAGS) $(LIBS)
+	$(LD) $(OCFLAGS) $(LIBS) get_barcode.cpp

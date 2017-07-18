@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 	char buff[256];
 	int buff_len = 256;
 	int subset_len = 10;
-	for (int i = files.size(); i < files.size(); ++i)
+	for (int i = 0; i < files.size(); ++i)
 	{
 		cout << files[i] << "..." << endl;
 		gzFile gfp = gzopen(files[i].c_str(), "r");

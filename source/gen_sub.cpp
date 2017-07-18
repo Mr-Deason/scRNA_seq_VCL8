@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 		int len;
 		int line_cnt = 0;
 		int qt = 0;
-		while ((!qt) && len = gzread(gfp, buff, buff_len))
+		while (len = gzread(gfp, buff, buff_len))
 		{
 			for (int j = 0; (!qt) && j < len; ++j)
 			{

@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 	if (exists(fastq_dir) && fs::is_directory(fastq_dir))
 	{
 		for (fs::directory_entry ite : fs::directory_iterator(fastq_dir))
-			if (fs::is_regular_file(ite) && ite.path().string()[0] == 'r')
+			if (fs::is_regular_file(ite) && ite.path().filename().string()[0] == 'r')
 			{
 				files.push_back(ite.path().string());
 				filenames.push_back(ite.path().filename().string());

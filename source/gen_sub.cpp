@@ -1,12 +1,14 @@
-
+#include <iostream>
 #include <stdio.h>
 #include <zlib.h>
 #include <string>
+#include <vector>
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/foreach.hpp>  
 
+using namespace std;
 namespace fs = boost::filesystem;
 namespace pt = boost::property_tree;
 

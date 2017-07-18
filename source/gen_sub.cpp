@@ -72,18 +72,22 @@ int main(int argc, char *argv[])
 		gzFile gf_out = gzopen((gen_dir + filenames[i]).c_str(), "w");
 		int len;
 		int line_cnt = 0;
-		while (len = gzread(gfp, buff, buff_len))
+		int qt = 0;
+		while ((!qt) && len = gzread(gfp, buff, buff_len))
 		{
-			for (int j = 0; j < len; ++j)
+			for (int j = 0; (!qt) && j < len; ++j)
 			{
 				if (buff[j] == '\n')
 					++line_cnt;
 				if (line_cnt == subset_len * 4)
+				{
+					qt = 1;
 					len = j;
+				}
 			}
 			cout << buff;
 			gzwrite(gf_out, buff, len);
-			if (len < buff_len)
+			if (qt)
 				break;
 		}
 		gzclose(gfp);

@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 
 	vector<string> files;
 	vector<string> filenames;
-	fs::path fastq_dir(BASE_DIR.c_str());
+	fs::path fastq_dir((BASE_DIR + "fastq_files/").c_str());
 	if (exists(fastq_dir) && fs::is_directory(fastq_dir))
 	{
 		for (fs::directory_entry ite : fs::directory_iterator(fastq_dir))
@@ -58,13 +58,13 @@ int main(int argc, char *argv[])
 		//sort(files.begin(), files.end());
 	}
 
-	string sub_dir = "subset/";
+	string sub_dir = "subset_1m/";
 	string gen_dir = BASE_DIR + sub_dir;
 	fs::create_directory(gen_dir);
 
 	char buff[256];
 	int buff_len = 256;
-	int subset_len = 30000;
+	int subset_len = 1000000;
 	for (int i = 0; i < files.size(); ++i)
 	{
 		cout << files[i] << "..." << endl;

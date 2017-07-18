@@ -73,13 +73,16 @@ int main(int argc, char *argv[])
 		int len;
 		int line_cnt = 0;
 		int qt = 0;
+		int times = 4;
+		if (files[i][5] == 'R')
+			times = 8;
 		while (len = gzread(gfp, buff, buff_len))
 		{
 			for (int j = 0; (!qt) && j < len; ++j)
 			{
 				if (buff[j] == '\n')
 					++line_cnt;
-				if (line_cnt == subset_len * 4)
+				if (line_cnt == subset_len * times)
 				{
 					qt = 1;
 					len = j+1;

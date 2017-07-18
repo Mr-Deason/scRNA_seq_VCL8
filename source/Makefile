@@ -7,7 +7,7 @@ OCFLAGS = -std=c++11
 
 
 default: all
-all: get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix
+all: get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix gen_sub
 
 get_barcode : get_barcode.o
 	$(LD) -o get_barcode $(OCFLAGS) get_barcode.o $(LIBS)
@@ -25,6 +25,10 @@ prep_TCC_matrix : prep_TCC_matrix.o
 	$(LD) -o prep_TCC_matrix $(OCFLAGS) prep_TCC_matrix.o $(LIBS)
 prep_TCC_matrix.o : prep_TCC_matrix.cpp
 	$(CPP) $(OCFLAGS) -c prep_TCC_matrix.cpp
+gen_sub : gen_sub.o
+	$(LD) -o gen_sub $(OCFLAGS) gen_sub.o $(LIBS)
+gen_sub.o : gen_sub.cpp
+	$(CPP) $(OCFLAGS) -c gen_sub.cpp
 
 clean:
 	rm get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix

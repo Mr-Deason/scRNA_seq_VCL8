@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 
 	char buff[256];
 	int buff_len = 256;
-	int subset_len = 10000;
+	int subset_len = 100000;
 	for (int i = 0; i < files.size(); ++i)
 	{
 		cout << files[i] << "..." << endl;

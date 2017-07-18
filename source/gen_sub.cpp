@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
 	int subset_len = 10;
 	for (int i = files.size(); i < files.size(); ++i)
 	{
+		cout << files[i] << "..." << endl;
 		gzFile gfp = gzopen(files[i].c_str(), "r");
 		gzFile gf_out = gzopen((gen_dir + filenames[i]).c_str(), "w");
 		int len;

@@ -85,6 +85,7 @@ int main(int argc, char *argv[])
 					len = j;
 				}
 			}
+			buff[len] = 0;
 			cout << buff;
 			gzwrite(gf_out, buff, len);
 			if (qt)

@@ -64,8 +64,8 @@ int main(int argc, char *argv[])
 
 	char buff[256];
 	int buff_len = 256;
-	int subset_len = 10;
-	for (int i = 0; i < files.size(); ++i)
+	int subset_len = 2;
+	for (int i = 2; i < 3; ++i)
 	{
 		cout << files[i] << "..." << endl;
 		gzFile gfp = gzopen(files[i].c_str(), "r");
@@ -81,6 +81,7 @@ int main(int argc, char *argv[])
 				if (line_cnt == subset_len * 4)
 					len = j;
 			}
+			cout << buff;
 			gzwrite(gf_out, buff, len);
 			if (len < buff_len)
 				break;

@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
 				if (line_cnt == subset_len * 4)
 				{
 					qt = 1;
-					len = j;
+					len = j+1;
 				}
 			}
 			buff[len] = 0;

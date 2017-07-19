@@ -154,6 +154,7 @@ int main(int argc, char *argv[])
 
 	vector<vector<int> > ret;
 	ret.resize(codewords.size());
+#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < barcodes.size(); ++i)
 	{
 		unsigned int barcode = barcodes[i];
@@ -199,8 +200,8 @@ int main(int argc, char *argv[])
 	cout << "merge all reads..." << endl;
 	string all_reads_file = "all_reads.fastq";
 	fp = fopen((SAVE_DIR+all_reads_file).c_str(), "wb");
-	char buff[256];
-	int buff_len = 256;
+	char buff[4096];
+	int buff_len = 4096;
 	for (int i = files.size() / 2; i < files.size(); ++i)
 	{
 		gzFile gfp = gzopen(files[i].c_str(), "r");

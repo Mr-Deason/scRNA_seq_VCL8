@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 		//sort(files.begin(), files.end());
 	}
 
-	string sub_dir = "subset_10m/";
+	string sub_dir = "subset_5m/";
 	string gen_dir = BASE_DIR + sub_dir;
 	fs::create_directory(gen_dir);
 

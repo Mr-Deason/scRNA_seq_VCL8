@@ -31,4 +31,4 @@ gen_sub.o : gen_sub.cpp
 	$(CPP) $(CFLAG) -c gen_sub.cpp
 
 clean:
-	rm get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix
+	rm get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix gen_sub

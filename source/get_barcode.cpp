@@ -460,7 +460,7 @@ int main(int argc, char *argv[])
 
 	vector<unsigned int> barcodes;
 	//all "read-I1_*" files
-#pragma omp parallel for num_threads(NUM_THREADS)
+//#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < files.size() / 2; ++i)
 	{
 		cout << files[i] << endl;

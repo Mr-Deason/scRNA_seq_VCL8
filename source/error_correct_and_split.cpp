@@ -154,7 +154,7 @@ int main(int argc, char *argv[])
 
 	vector<vector<int> > ret;
 	ret.resize(codewords.size());
-#pragma omp parallel for num_threads(NUM_THREADS)
+//#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < barcodes.size(); ++i)
 	{
 		unsigned int barcode = barcodes[i];

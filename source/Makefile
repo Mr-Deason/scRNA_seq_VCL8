@@ -3,7 +3,7 @@ CPP = g++
 LD = g++ -L /usr/local/lib
 
 LIBS = -lz -lboost_filesystem -lboost_system
-CFLAG = -std=c++11 
+CFLAG = -fopenmp -std=c++11 
 
 
 default: all

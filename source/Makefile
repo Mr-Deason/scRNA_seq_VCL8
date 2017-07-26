@@ -29,6 +29,10 @@ gen_sub : gen_sub.o
 	$(LD) -o gen_sub $(CFLAG) gen_sub.o $(LIBS)
 gen_sub.o : gen_sub.cpp
 	$(CPP) $(CFLAG) -c gen_sub.cpp
+gen_shuffle_sub : gen_shuffle_sub.o
+	$(LD) -o gen_shuffle_sub $(CFLAG) gen_shuffle_sub.o $(LIBS)
+gen_shuffle_sub.o : gen_shuffle_sub.cpp
+	$(CPP) $(CFLAG) -c gen_shuffle_sub.cpp
 
 clean:
-	rm get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix gen_sub
+	rm get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix gen_sub gen_shuffle_sub

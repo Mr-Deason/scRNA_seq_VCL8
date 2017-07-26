@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 
 
 	int subset_len[] = {10000, 100000, 1000000, 5000000, 10000000};
-	string sub_dir[] = {"subset_10k/", "subset_100k/", "subset_1m/", "subset_5m/", "subset_10m/"};
+	string sub_dir[] = {"subset_shuffle_10k/", "subset_shuffle_100k/", "subset_shuffle_1m/", "subset_shuffle_5m/", "subset_shuffle_10m/"};
 	for (int c = 0; c < 5; ++c)
 	{
 

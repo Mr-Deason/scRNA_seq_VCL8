@@ -63,13 +63,13 @@ int main(int argc, char *argv[])
 
 	int subset_len[] = {10000, 100000, 1000000, 5000000, 10000000};
 	string sub_dir[] = {"subset_10k/", "subset_100k/", "subset_1m/", "subset_5m/", "subset_10m/"};
-	for (int case = 0; case < 5; ++case)
+	for (int c = 0; c < 5; ++c)
 	{
 
 		FILE *fs = fopen("ids", "r");
 		vector<int> idx;
 		int id;
-		for (int i=0;i<subset_len[case];++i)
+		for (int i=0;i<subset_len[c];++i)
 		{
 			fscanf(fs, "%d", &id);
 			idx.push_back(id);
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
 		fclose(fs);
 
 
-		string gen_dir = BASE_DIR + sub_dir[case];
+		string gen_dir = BASE_DIR + sub_dir[c];
 		fs::create_directory(gen_dir);
 
 		char buff[256];

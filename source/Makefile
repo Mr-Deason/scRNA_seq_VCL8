@@ -7,7 +7,7 @@ CFLAG = -fopenmp -std=c++11
 
 
 default: all
-all: get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix gen_sub
+all: get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix gen_sub gen_shuffle_sub
 
 get_barcode : get_barcode.o
 	$(LD) -o get_barcode $(CFLAG) get_barcode.o $(LIBS)

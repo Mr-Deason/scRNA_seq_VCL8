@@ -205,6 +205,47 @@ int main(int argc, char *argv[])
 	for (int i = files.size() / 2; i < files.size(); ++i)
 	{
 		gzFile gfp = gzopen(files[i].c_str(), "r");
+		//int len;
+		//while (len = gzread(gfp, buff, buff_len))
+		while (1)
+		{
+			gzgets(gfp, buff, buff_len);
+			if (buff[0] == '\0')
+				break;
+
+			//fwrite(buff, sizeof(char), len, fp);
+			fputs(buff, fp);
+			int len = strlen(buff);
+			/*
+			for (int j = 0; j < len; ++j)
+			{
+				if (buff[j] == '\n')
+					line_byte_idx.push_back(byte_cnt + j + 1);
+			}
+			*/
+			line_byte_idx.push_back(byte_cnt + len + 1);
+			byte_cnt += len + 1;
+		}
+		gzclose(gfp);
+	}
+	fclose(fp);
+
+	string line_byte_idx_ = "line_byte_idx";
+	fp = fopen((SAVE_DIR+line_byte_idx_).c_str(), "wb");
+	for (int i=0;i<line_byte_idx.size();++i)
+		fprintf(fp, "%d\n", line_byte_idx[i]);
+
+
+	vector<int> line_byte_idx_o;
+	line_byte_idx_o.push_back(0);
+	int byte_cnt = 0;
+
+	//all "read-RA_*" files
+	cout << "merge all reads..." << endl;
+	fp = fopen((SAVE_DIR+all_reads_file).c_str(), "wb");
+	for (int i = files.size() / 2; i < files.size(); ++i)
+	{
+		gzFile gfp = gzopen(files[i].c_str(), "r");
 		int len;
 		while (len = gzread(gfp, buff, buff_len))
 		{
@@ -212,9 +253,9 @@ int main(int argc, char *argv[])
 			for (int j = 0; j < len; ++j)
 			{
 				if (buff[j] == '\n')
-					line_byte_idx.push_back(byte_cnt + j + 1);
+					line_byte_idx_o.push_back(byte_cnt + j + 1);
 			}
-			byte_cnt += len;
+			byte_cnt += len + 1;
 			if (len < buff_len)
 				break;
 		}
@@ -222,6 +263,11 @@ int main(int argc, char *argv[])
 	}
 	fclose(fp);
 
+	string line_byte_idx_ori = "line_byte_idx_ori";
+	fp = fopen((SAVE_DIR+line_byte_idx_ori).c_str(), "wb");
+	for (int i=0;i<line_byte_idx_o.size();++i)
+		fprintf(fp, "%d\n", line_byte_idx_o[i]);
+/*
 	fp = fopen((SAVE_DIR+all_reads_file).c_str(), "r");
 	string umi_read_file = "umi_read_list.txt";
 	fs::path output_dir(OUTPUT_DIR.c_str());
@@ -268,7 +314,7 @@ int main(int argc, char *argv[])
 	}
 	fclose(fp);
 	fclose(fp_umi_list);
-
+*/
 	return 0;
 }
 

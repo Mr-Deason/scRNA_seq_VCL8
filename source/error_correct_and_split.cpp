@@ -220,7 +220,7 @@ int main(int argc, char *argv[])
 	fp = fopen((SAVE_DIR+line_byte_idx_).c_str(), "wb");
 	for (int i=0;i<line_byte_idx.size();++i)
 		fprintf(fp, "%ld\n", line_byte_idx[i]);
-	flcose(fp);
+	fclose(fp);
 
 	/*
 	vector<long> line_byte_idx_o;

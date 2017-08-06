@@ -1,7 +1,7 @@
 t0=`date +'%Y-%m-%d %H:%M:%S'`
 s0=$(date --date="$t0" +%s);
 
-#./get_barcode $1
+./get_barcode $1
 
 t1=`date +'%Y-%m-%d %H:%M:%S'`
 s1=$(date --date="$t1" +%s);
@@ -11,14 +11,14 @@ s1=$(date --date="$t1" +%s);
 t2=`date +'%Y-%m-%d %H:%M:%S'`
 s2=$(date --date="$t2" +%s);
 
-#./compute_TCCs $1
+./compute_TCCs $1
 
 t3=`date +'%Y-%m-%d %H:%M:%S'`
 s3=$(date --date="$t3" +%s);
 
 echo "kallisto running time: "$((s3-s2))"s"
 
-#./prep_TCC_matrix $1
+./prep_TCC_matrix $1
 
 t4=`date +'%Y-%m-%d %H:%M:%S'`
 s4=$(date --date="$t4" +%s);

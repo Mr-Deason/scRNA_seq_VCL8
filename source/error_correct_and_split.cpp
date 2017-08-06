@@ -225,7 +225,7 @@ int main(int argc, char *argv[])
 			}
 			*/
 			line_byte_idx.push_back(byte_cnt + len + 1);
-			byte_cnt += len + 1;
+			byte_cnt += len;
 		}
 		gzclose(gfp);
 	}

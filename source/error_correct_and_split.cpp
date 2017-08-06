@@ -209,7 +209,7 @@ int main(int argc, char *argv[])
 		{
 			int len = strlen(buff);
 			fputs(buff, fp);
-			line_byte_idx.push_back(byte_cnt + len + 1);
+			line_byte_idx.push_back(byte_cnt + len);
 			byte_cnt += len;
 		}
 		gzclose(gfp);
@@ -253,7 +253,9 @@ int main(int argc, char *argv[])
 	fp = fopen((SAVE_DIR+line_byte_idx_ori).c_str(), "wb");
 	for (int i=0;i<line_byte_idx_o.size();++i)
 		fprintf(fp, "%ld\n", line_byte_idx_o[i]);
-/*
+
+	line_byte_idx = line_byte_idx_o;
+
 	fp = fopen((SAVE_DIR+all_reads_file).c_str(), "r");
 	string umi_read_file = "umi_read_list.txt";
 	fs::path output_dir(OUTPUT_DIR.c_str());
@@ -261,7 +263,7 @@ int main(int argc, char *argv[])
 	FILE *fp_umi_list = fopen((OUTPUT_DIR+umi_read_file).c_str(), "wb");
 	int flag = 0;
 	char filename[40], fastq_file[100], fastq_gz_file[100], umi_file[100];
-	for (int i = 0; i < codewords.size(); ++i)
+	for (int i = 0; i < 1 && i < codewords.size(); ++i)
 	{
 		sprintf(filename, "cell_%04d_%s", i, decode(codewords[i], BARCODE_LENGTH).c_str());
 		//sprintf(fastq_file, "%s%s.fastq", OUTPUT_DIR.c_str(), filename);
@@ -275,8 +277,8 @@ int main(int argc, char *argv[])
 		fprintf(fp_umi_list, "%s\t%s\t%s\n", filename, umi_file, fastq_gz_file);
 		for (int j = 0; j < ret[i].size(); ++j)
 		{
-			unsigned int r = ret[i][j];
-			int line = r * 8;
+			unsigned long r = ret[i][j];
+			long line = r * 8;
 			fseek(fp, line_byte_idx[line] , SEEK_SET);
 			for (;line < r*8 +6;++line)
 			{ 
@@ -300,7 +302,7 @@ int main(int argc, char *argv[])
 	}
 	fclose(fp);
 	fclose(fp_umi_list);
-*/
+
 	return 0;
 }
 

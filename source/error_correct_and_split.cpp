@@ -207,9 +207,8 @@ int main(int argc, char *argv[])
 		gzFile gfp = gzopen(files[i].c_str(), "r");
 		//int len;
 		//while (len = gzread(gfp, buff, buff_len))
-		while (1)
+		while (gzgets(gfp, buff, buff_len))
 		{
-			gzgets(gfp, buff, buff_len);
 			if (buff[0] == '\0')
 				break;
 

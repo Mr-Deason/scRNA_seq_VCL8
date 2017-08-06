@@ -257,7 +257,7 @@ int main(int argc, char *argv[])
 	line_byte_idx = line_byte_idx_o;
 
 	*/
-	
+
 	fp = fopen((SAVE_DIR+all_reads_file).c_str(), "r");
 	string umi_read_file = "umi_read_list.txt";
 	fs::path output_dir(OUTPUT_DIR.c_str());
@@ -284,14 +284,15 @@ int main(int argc, char *argv[])
 			fseek(fp, line_byte_idx[line] , SEEK_SET);
 			for (;line < r*8 +6;++line)
 			{ 
-				int len = line_byte_idx[line + 1] - line_byte_idx[line];
+				//int len = line_byte_idx[line + 1] - line_byte_idx[line];
 				//fread(buff, sizeof(char), len, fp);
 				fgets(buff, buff_len, fp);
 				if (line < r * 8 + 4)
 				{
 					//fwrite(buff, sizeof(char), len, ffq);
 					//fputs(buff, ffq);
-					gzwrite(gffq, buff, len);
+					//gzwrite(gffq, buff, len);
+					gzputs(gffq, buff);
 				}
 				if (line > r * 8 + 4)
 					//fwrite(buff, sizeof(char), len, fum);

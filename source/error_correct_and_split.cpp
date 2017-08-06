@@ -205,25 +205,10 @@ int main(int argc, char *argv[])
 	for (int i = files.size() / 2; i < files.size(); ++i)
 	{
 		gzFile gfp = gzopen(files[i].c_str(), "r");
-		//int len;
-		//while (len = gzread(gfp, buff, buff_len))
 		while (gzgets(gfp, buff, buff_len))
 		{
-			if (buff[0] == '\0')
-				break;
-
-			//fwrite(buff, sizeof(char), len, fp);
 			int len = strlen(buff);
-			if (len == 0)
-				break;
 			fputs(buff, fp);
-			/*
-			for (int j = 0; j < len; ++j)
-			{
-				if (buff[j] == '\n')
-					line_byte_idx.push_back(byte_cnt + j + 1);
-			}
-			*/
 			line_byte_idx.push_back(byte_cnt + len + 1);
 			byte_cnt += len;
 		}
@@ -234,7 +219,7 @@ int main(int argc, char *argv[])
 	string line_byte_idx_ = "line_byte_idx";
 	fp = fopen((SAVE_DIR+line_byte_idx_).c_str(), "wb");
 	for (int i=0;i<line_byte_idx.size();++i)
-		fprintf(fp, "%d\n", line_byte_idx[i]);
+		fprintf(fp, "%ld\n", line_byte_idx[i]);
 
 
 	vector<long> line_byte_idx_o;
@@ -267,7 +252,7 @@ int main(int argc, char *argv[])
 	string line_byte_idx_ori = "line_byte_idx_ori";
 	fp = fopen((SAVE_DIR+line_byte_idx_ori).c_str(), "wb");
 	for (int i=0;i<line_byte_idx_o.size();++i)
-		fprintf(fp, "%d\n", line_byte_idx_o[i]);
+		fprintf(fp, "%ld\n", line_byte_idx_o[i]);
 /*
 	fp = fopen((SAVE_DIR+all_reads_file).c_str(), "r");
 	string umi_read_file = "umi_read_list.txt";

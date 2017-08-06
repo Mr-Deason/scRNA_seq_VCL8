@@ -214,8 +214,10 @@ int main(int argc, char *argv[])
 				break;
 
 			//fwrite(buff, sizeof(char), len, fp);
-			fputs(buff, fp);
 			int len = strlen(buff);
+			if (len == 0)
+				break;
+			fputs(buff, fp);
 			/*
 			for (int j = 0; j < len; ++j)
 			{
@@ -238,7 +240,7 @@ int main(int argc, char *argv[])
 
 	vector<int> line_byte_idx_o;
 	line_byte_idx_o.push_back(0);
-	int byte_cnt = 0;
+	byte_cnt = 0;
 
 	//all "read-RA_*" files
 	cout << "merge all reads..." << endl;

@@ -216,13 +216,13 @@ int main(int argc, char *argv[])
 	}
 	fclose(fp);
 
+	/*
 	string line_byte_idx_ = "line_byte_idx";
 	fp = fopen((SAVE_DIR+line_byte_idx_).c_str(), "wb");
 	for (int i=0;i<line_byte_idx.size();++i)
 		fprintf(fp, "%ld\n", line_byte_idx[i]);
 	fclose(fp);
 
-	/*
 	vector<long> line_byte_idx_o;
 	line_byte_idx_o.push_back(0);
 	byte_cnt = 0;

@@ -221,7 +221,7 @@ int main(int argc, char *argv[])
 	for (int i=0;i<line_byte_idx.size();++i)
 		fprintf(fp, "%ld\n", line_byte_idx[i]);
 
-
+	/*
 	vector<long> line_byte_idx_o;
 	line_byte_idx_o.push_back(0);
 	byte_cnt = 0;
@@ -256,6 +256,8 @@ int main(int argc, char *argv[])
 
 	line_byte_idx = line_byte_idx_o;
 
+	*/
+	
 	fp = fopen((SAVE_DIR+all_reads_file).c_str(), "r");
 	string umi_read_file = "umi_read_list.txt";
 	fs::path output_dir(OUTPUT_DIR.c_str());

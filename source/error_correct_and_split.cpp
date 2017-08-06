@@ -192,9 +192,9 @@ int main(int argc, char *argv[])
 		//sort(files.begin(), files.end());
 	}
 
-	vector<int> line_byte_idx;
+	vector<long> line_byte_idx;
 	line_byte_idx.push_back(0);
-	int byte_cnt = 0;
+	long byte_cnt = 0;
 
 	//all "read-RA_*" files
 	cout << "merge all reads..." << endl;
@@ -237,7 +237,7 @@ int main(int argc, char *argv[])
 		fprintf(fp, "%d\n", line_byte_idx[i]);
 
 
-	vector<int> line_byte_idx_o;
+	vector<long> line_byte_idx_o;
 	line_byte_idx_o.push_back(0);
 	byte_cnt = 0;
 

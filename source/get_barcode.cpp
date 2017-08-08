@@ -426,6 +426,7 @@ int main(int argc, char *argv[])
 		cout << "json" << endl;
 		return -1;
 	}
+	
 	pt::ptree root;
 	pt::read_json(argv[1], root);
 	
@@ -479,7 +480,7 @@ int main(int argc, char *argv[])
 	}
 
 	FILE* fp;
-
+	
 	map<unsigned int, int> barcodes_cnt;
 	for (int i = 0; i < barcodes.size(); ++i)
 	{
@@ -503,7 +504,8 @@ int main(int argc, char *argv[])
 	}
 
 	double *yhat = savgol_filter(diff, cnt_bar.size() - 1, 151, 1);
-
+	
+	
 	int border = WINDOWS[0];
 	for (int i = WINDOWS[0]; i < WINDOWS[1]; ++i)
 		if (yhat[border] > yhat[i])
@@ -522,7 +524,7 @@ int main(int argc, char *argv[])
 	int **dist = new int*[num_barcodes];
 	for (int i = 0; i < num_barcodes; ++i)
 		dist[i] = new int[num_barcodes];
-
+	
 	for (int i = 0; i < num_barcodes; ++i)
 	{
 		dist[i][i] = BARCODE_LENGTH + 1;
@@ -575,7 +577,7 @@ int main(int argc, char *argv[])
 	for (int i = 0; i < num_barcodes; i++)
 		delete[] dist[i];
 	delete[] dist;
-
+	
 	return 0;
 }
 

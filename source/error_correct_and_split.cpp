@@ -175,7 +175,6 @@ int main(int argc, char *argv[])
 		}
 	}
 
-
 	int NUM_OF_READS_in_CELL_BARCODES = 0;
 	for (int i = 0; i < codewords.size(); ++i)
 		NUM_OF_READS_in_CELL_BARCODES += ret[i].size();
@@ -204,6 +203,7 @@ int main(int argc, char *argv[])
 	int buff_len = 1024;
 	for (int i = files.size() / 2; i < files.size(); ++i)
 	{
+		cout << files[i] << endl;
 		gzFile gfp = gzopen(files[i].c_str(), "r");
 		while (gzgets(gfp, buff, buff_len))
 		{

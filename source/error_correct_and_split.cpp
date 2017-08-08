@@ -98,6 +98,9 @@ int main(int argc, char *argv[])
 		cout << "json" << endl;
 		return -1;
 	}
+
+	int t0 = clock();
+
 	pt::ptree root;
 	pt::read_json(argv[1], root);
 	
@@ -175,6 +178,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	int t1 = clock();
 	int NUM_OF_READS_in_CELL_BARCODES = 0;
 	for (int i = 0; i < codewords.size(); ++i)
 		NUM_OF_READS_in_CELL_BARCODES += ret[i].size();
@@ -216,6 +220,7 @@ int main(int argc, char *argv[])
 	}
 	fclose(fp);
 
+	int t2 = clock();
 	/*
 	string line_byte_idx_ = "line_byte_idx";
 	fp = fopen((SAVE_DIR+line_byte_idx_).c_str(), "wb");
@@ -307,6 +312,11 @@ int main(int argc, char *argv[])
 	fclose(fp);
 	fclose(fp_umi_list);
 
+	int t3 = clock();
+
+	cout << "calc ret " <<  (t1 - t0) << endl;
+	cout << "merge " << (t2 - t1) << endl;
+	cout << "split " << (t3 - t2) << endl;
 	return 0;
 }
 

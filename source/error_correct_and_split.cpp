@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
 		for (fs::directory_entry ite : fs::directory_iterator(fastq_dir))
 			if (fs::is_regular_file(ite))
 				files.push_back(ite.path().string());
-		//sort(files.begin(), files.end());
+		sort(files.begin(), files.end());
 	}
 
 	vector<long> line_byte_idx;

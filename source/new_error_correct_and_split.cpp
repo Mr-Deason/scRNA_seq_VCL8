@@ -215,7 +215,7 @@ int main(int argc, char *argv[])
 	int t2 = clock();
 
 	cout << "gunzip..." << endl;
-	cmd = "gunzip -f " + all_reads_file + ".gz";
+	cmd = "gunzip -f " + SAVE_DIR+all_reads_file + ".gz";
 	system(cmd.c_str());
 
 	int t3 = clock();

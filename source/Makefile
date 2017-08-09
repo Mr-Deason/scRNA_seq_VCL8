@@ -7,7 +7,7 @@ CFLAG = -fopenmp -std=c++11
 
 
 default: all
-all: get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix gen_sub gen_shuffle_sub
+all: get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix gen_sub gen_shuffle_sub new_error_correct_and_split
 
 get_barcode : get_barcode.o
 	$(LD) -o get_barcode $(CFLAG) get_barcode.o $(LIBS)
@@ -34,5 +34,10 @@ gen_shuffle_sub : gen_shuffle_sub.o
 gen_shuffle_sub.o : gen_shuffle_sub.cpp
 	$(CPP) $(CFLAG) -c gen_shuffle_sub.cpp
 
+new_error_correct_and_split : new_error_correct_and_split.o
+	$(LD) -o new_error_correct_and_split $(CFLAG) new_error_correct_and_split.o $(LIBS)
+new_error_correct_and_split.o : new_error_correct_and_split.cpp
+	$(CPP) $(CFLAG) -c new_error_correct_and_split.cpp
+
 clean:
-	rm get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix gen_sub gen_shuffle_sub
+	rm get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix gen_sub gen_shuffle_sub new_error_correct_and_split *.o

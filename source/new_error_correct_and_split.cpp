@@ -205,6 +205,7 @@ int main(int argc, char *argv[])
 	//all "read-RA_*" files
 
 	cout << "merge all reads..." << endl;
+	string all_reads_file = "all_reads.fastq";
 	string cmd = "cat ";
 	for (int i = files.size() / 2; i < files.size(); ++i)
 		cmd += files[i] + " ";
@@ -220,8 +221,9 @@ int main(int argc, char *argv[])
 	int t3 = clock();
 	cout << "line_offset..." << endl;
 	fp = fopen((SAVE_DIR+all_reads_file).c_str(), "r");
-	while (fgets(buff,buff_len, fp))
+	while (fgets(buff, buff_len, fp))
 	{
+		int len = strlen(buff);
 		line_byte_idx.push_back(byte_cnt + len);
 		byte_cnt += len;
 	}

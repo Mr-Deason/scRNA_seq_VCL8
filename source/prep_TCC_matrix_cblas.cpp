@@ -140,7 +140,10 @@ int main(int argc, char* argv[])
 			cblas_dcopy(uni_cols.size(), TCCmatrix[j], 1, vec_buff, 1);
 			cblas_daxpy(uni_cols.size(), -1, TCCmatrix[i], 1, vec_buff, 1);
 			dist[i][j] = cblas_dasum(uni_cols.size(), vec_buff, 1);
-			dist[j][i] = dist[i][j];
+			if (dist[j][i] != dist[i][j])
+			{
+				cout << "error" << endl;
+			}
 		}
 	}
 

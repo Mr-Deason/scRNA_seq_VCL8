@@ -2,7 +2,7 @@ CC = gcc
 CPP = g++
 LD = g++ -L /usr/local/lib
 
-LIBS = -lz -lboost_filesystem -lboost_system
+LIBS = -lz -lboost_filesystem -lboost_system -lcblas -llapacke -llapack -lrefblas
 CFLAG = -fopenmp -std=c++11 
 
 

@@ -7,7 +7,14 @@ CFLAG = -fopenmp -std=c++11
 
 
 default: all
-all: get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix gen_sub gen_shuffle_sub new_error_correct_and_split
+all: get_barcode \
+	error_correct_and_split \
+	compute_TCCs \
+	prep_TCC_matrix \
+	gen_sub \
+	gen_shuffle_sub \
+	new_error_correct_and_split \
+	prep_TCC_matrix_cblas
 
 get_barcode : get_barcode.o
 	$(LD) -o get_barcode $(CFLAG) get_barcode.o $(LIBS)
@@ -39,5 +46,18 @@ new_error_correct_and_split : new_error_correct_and_split.o
 new_error_correct_and_split.o : new_error_correct_and_split.cpp
 	$(CPP) $(CFLAG) -c new_error_correct_and_split.cpp
 
+prep_TCC_matrix_cblas : prep_TCC_matrix_cblas.o
+	$(LD) -o prep_TCC_matrix_cblas $(CFLAG) prep_TCC_matrix_cblas.o $(LIBS)
+prep_TCC_matrix_cblas.o : prep_TCC_matrix_cblas.cpp
+	$(CPP) $(CFLAG) -c prep_TCC_matrix_cblas.cpp
+
 clean:
-	rm get_barcode error_correct_and_split compute_TCCs prep_TCC_matrix gen_sub gen_shuffle_sub new_error_correct_and_split *.o
+	rm get_barcode \
+	error_correct_and_split \
+	compute_TCCs \
+	prep_TCC_matrix \
+	gen_sub \
+	gen_shuffle_sub \
+	new_error_correct_and_split \
+	prep_TCC_matrix_cblas \
+	*.o

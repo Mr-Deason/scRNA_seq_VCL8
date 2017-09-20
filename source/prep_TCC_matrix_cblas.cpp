@@ -71,19 +71,14 @@ int main(int argc, char* argv[])
 	}
 	fclose(fp);
 
-	unordered_map<int, int> map_rows;
+	unordered_map<int, int> map_rows, map_cols;
 	vector<int> uni_rows(rows), uni_cols(cols);
 	sort(uni_rows.begin(), uni_rows.end());
+	sort(uni_cols.begin(), uni_cols.end());
 	uni_rows.erase(unique(uni_rows.begin(), uni_rows.end()), uni_rows.end());
+	uni_cols.erase(unique(uni_cols.begin(), uni_cols.end()), uni_cols.end());
 	for (int i = 0; i < uni_rows.size(); ++i)
 		map_rows[uni_rows[i]] = i;
-
-	int NUM_OF_CELLS = uni_rows.size();
-	cout << "NUM_OF_CELLS = " << NUM_OF_CELLS << endl;
-	double* rows_sum = new double[uni_rows.size()];
-	memset(rows_sum, 0, uni_rows.size() * sizeof(double));
-	for (int i = 0; i < rows.size(); ++i)
-		rows_sum[map_rows[rows[i]]] += data[i];
 	for (int i = 0; i < uni_cols.size(); ++i)
 		map_cols[uni_cols[i]] = i;
 
@@ -108,7 +103,6 @@ int main(int argc, char* argv[])
 	}
 
 	cout << "Calculating pairwise L1 distances..." << endl;
-	int t0 = clock();
 	double** dist = new double*[NUM_OF_CELLS];
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{
@@ -122,7 +116,7 @@ int main(int argc, char* argv[])
 	int cnt = 0;
 	int t0 = clock();
 	time_t tt0 = time(NULL);
-	
+
 	#pragma omp parallel for num_threads(8)
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{

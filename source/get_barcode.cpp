@@ -415,7 +415,27 @@ double* savgol_filter(double *data, int n, int win_len, int polyorder)
 
 bool brc_cmp(pair<int, unsigned int> a, pair<int, unsigned int> b)
 {
+	return a.first > b.first;
+}
+bool brc_cmp1(pair<int, unsigned int> a, pair<int, unsigned int> b)
+{
 	return a.first >= b.first;
+}
+bool brc_cmp2(pair<int, unsigned int> a, pair<int, unsigned int> b)
+{
+	return a.first == b.first ? (a.second > b.second) : (a.first > b.first);
+}
+bool brc_cmp3(pair<int, unsigned int> a, pair<int, unsigned int> b)
+{
+	return a.first == b.first ? (a.second >= b.second) : (a.first > b.first);
+}
+bool brc_cmp4(pair<int, unsigned int> a, pair<int, unsigned int> b)
+{
+	return a.first == b.first ? (a.second < b.second) : (a.first > b.first);
+}
+bool brc_cmp5(pair<int, unsigned int> a, pair<int, unsigned int> b)
+{
+	return a.first == b.first ? (a.second <= b.second) : (a.first > b.first);
 }
 
 int main(int argc, char *argv[])
@@ -497,6 +517,41 @@ int main(int argc, char *argv[])
 	{
 		cnt_bar.push_back(make_pair(ite->second, ite->first));
 	}
+
+//---
+	vector<pair<int, unsigned int> > cnt_bar1(cnt_bar);
+	vector<pair<int, unsigned int> > cnt_bar2(cnt_bar);
+	vector<pair<int, unsigned int> > cnt_bar3(cnt_bar);
+	vector<pair<int, unsigned int> > cnt_bar4(cnt_bar);
+	vector<pair<int, unsigned int> > cnt_bar5(cnt_bar);
+	sort(cnt_bar1.begin(), cnt_bar1.end(), brc_cmp1);
+	sort(cnt_bar2.begin(), cnt_bar2.end(), brc_cmp2);
+	sort(cnt_bar3.begin(), cnt_bar3.end(), brc_cmp3);
+	sort(cnt_bar4.begin(), cnt_bar4.end(), brc_cmp4);
+	sort(cnt_bar5.begin(), cnt_bar5.end(), brc_cmp5);
+	fp = fopen("barcodes_cnt_cpp1.txt", "w");
+	for (int i=0;i<cnt_bar.size();++i)
+		fprintf(fp, "%d %s\n", cnt_bar1[i].first, decode(cnt_bar1[i].second, BARCODE_LENGTH).c_str());
+	fclose(fp);
+	fp = fopen("barcodes_cnt_cpp2.txt", "w");
+	for (int i=0;i<cnt_bar.size();++i)
+		fprintf(fp, "%d %s\n", cnt_bar2[i].first, decode(cnt_bar2[i].second, BARCODE_LENGTH).c_str());
+	fclose(fp);
+	fp = fopen("barcodes_cnt_cpp3.txt", "w");
+	for (int i=0;i<cnt_bar.size();++i)
+		fprintf(fp, "%d %s\n", cnt_bar3[i].first, decode(cnt_bar3[i].second, BARCODE_LENGTH).c_str());
+	fclose(fp);
+	fp = fopen("barcodes_cnt_cpp4.txt", "w");
+	for (int i=0;i<cnt_bar.size();++i)
+		fprintf(fp, "%d %s\n", cnt_bar4[i].first, decode(cnt_bar4[i].second, BARCODE_LENGTH).c_str());
+	fclose(fp);
+	fp = fopen("barcodes_cnt_cpp5.txt", "w");
+	for (int i=0;i<cnt_bar.size();++i)
+		fprintf(fp, "%d %s\n", cnt_bar5[i].first, decode(cnt_bar5[i].second, BARCODE_LENGTH).c_str());
+	fclose(fp);
+
+//---
+
 
 	sort(cnt_bar.begin(), cnt_bar.end(), brc_cmp);
 	for (int i = 0; i < 10 && i < cnt_bar.size(); ++i)

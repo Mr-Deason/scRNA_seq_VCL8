@@ -415,7 +415,7 @@ double* savgol_filter(double *data, int n, int win_len, int polyorder)
 
 bool brc_cmp(pair<int, unsigned int> a, pair<int, unsigned int> b)
 {
-	return a.first > b.first;
+	return a.first < b.first;
 }
 
 int main(int argc, char *argv[])
@@ -521,7 +521,7 @@ int main(int argc, char *argv[])
 	int *codewords = new int[num_barcodes];
 	for (int i = 0; i < num_barcodes; ++i)
 	{
-		num_reads -= cnt_bar[i].first;
+		num_reads += cnt_bar[i].first;
 		codewords[i] = cnt_bar[i].second;
 	}
 

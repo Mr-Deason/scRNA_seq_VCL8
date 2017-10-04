@@ -501,6 +501,11 @@ int main(int argc, char *argv[])
 	sort(cnt_bar.begin(), cnt_bar.end(), brc_cmp);
 	for (int i = 0; i < 10 && i < cnt_bar.size(); ++i)
 		cout << cnt_bar[i].first << ' ' << decode(cnt_bar[i].second, BARCODE_LENGTH) << endl;
+	fp = fopen("barcodes_cnt_cpp.txt", "w");
+	for (int i=0;i<cnt_bar.size();++i)
+		fprintf(fp, "%d %s\n", cnt_bar[i].first, decode(cnt_bar[i].second, BARCODE_LENGTH));
+	fclose(fp);
+
 
 	double *diff = (double*)malloc(cnt_bar.size() * sizeof(double));
 	for (int i = 0; i < cnt_bar.size() - 1; ++i)

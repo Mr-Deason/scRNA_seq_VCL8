@@ -526,6 +526,7 @@ int main(int argc, char *argv[])
 	for (int i=0;i<cnt_bar.size();++i)
 		fprintf(fp, "%d %s\n", cnt_bar1[i].first, decode(cnt_bar1[i].second, BARCODE_LENGTH).c_str());
 	fclose(fp);
+	/*
 	vector<pair<int, unsigned int> > cnt_bar2;
 	cnt_bar2.assign(cnt_bar.begin(), cnt_bar.end());
 	sort(cnt_bar2.begin(), cnt_bar2.end(), brc_cmp2);
@@ -554,7 +555,7 @@ int main(int argc, char *argv[])
 	for (int i=0;i<cnt_bar.size();++i)
 		fprintf(fp, "%d %s\n", cnt_bar5[i].first, decode(cnt_bar5[i].second, BARCODE_LENGTH).c_str());
 	fclose(fp);
-
+*/
 //---
 
 

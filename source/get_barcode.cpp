@@ -503,7 +503,7 @@ int main(int argc, char *argv[])
 		cout << cnt_bar[i].first << ' ' << decode(cnt_bar[i].second, BARCODE_LENGTH) << endl;
 	fp = fopen("barcodes_cnt_cpp.txt", "w");
 	for (int i=0;i<cnt_bar.size();++i)
-		fprintf(fp, "%d %s\n", cnt_bar[i].first, decode(cnt_bar[i].second, BARCODE_LENGTH));
+		fprintf(fp, "%d %s\n", cnt_bar[i].first, decode(cnt_bar[i].second, BARCODE_LENGTH).c_str());
 	fclose(fp);
 
 

@@ -519,6 +519,7 @@ int main(int argc, char *argv[])
 	}
 
 //---
+/*
 	vector<pair<int, unsigned int> > cnt_bar1;
 	cnt_bar1.assign(cnt_bar.begin(), cnt_bar.end());
 	sort(cnt_bar1.begin(), cnt_bar1.end(), brc_cmp1);
@@ -526,7 +527,7 @@ int main(int argc, char *argv[])
 	for (int i=0;i<cnt_bar.size();++i)
 		fprintf(fp, "%d %s\n", cnt_bar1[i].first, decode(cnt_bar1[i].second, BARCODE_LENGTH).c_str());
 	fclose(fp);
-	/*
+	
 	vector<pair<int, unsigned int> > cnt_bar2;
 	cnt_bar2.assign(cnt_bar.begin(), cnt_bar.end());
 	sort(cnt_bar2.begin(), cnt_bar2.end(), brc_cmp2);
@@ -559,10 +560,10 @@ int main(int argc, char *argv[])
 //---
 
 
-	sort(cnt_bar.begin(), cnt_bar.end(), brc_cmp);
+	sort(cnt_bar.begin(), cnt_bar.end(), brc_cmp1);
 	for (int i = 0; i < 10 && i < cnt_bar.size(); ++i)
 		cout << cnt_bar[i].first << ' ' << decode(cnt_bar[i].second, BARCODE_LENGTH) << endl;
-	fp = fopen("barcodes_cnt_cpp.txt", "w");
+	fp = fopen("barcodes_cnt_cpp1.txt", "w");
 	for (int i=0;i<cnt_bar.size();++i)
 		fprintf(fp, "%d %s\n", cnt_bar[i].first, decode(cnt_bar[i].second, BARCODE_LENGTH).c_str());
 	fclose(fp);

@@ -413,6 +413,11 @@ double* savgol_filter(double *data, int n, int win_len, int polyorder)
 	return ret+1;
 }
 
+bool brc_cmp(pair<int, unsigned int> a, pair<int, unsigned int> b)
+{
+	return a.first > b.first;
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -484,7 +489,7 @@ int main(int argc, char *argv[])
 	map<unsigned int, int> barcodes_cnt;
 	for (int i = 0; i < barcodes.size(); ++i)
 	{
-		barcodes_cnt[barcodes[i]]--;
+		barcodes_cnt[barcodes[i]]++;
 	}
 
 	vector<pair<int, unsigned int> > cnt_bar;
@@ -495,12 +500,12 @@ int main(int argc, char *argv[])
 
 	sort(cnt_bar.begin(), cnt_bar.end());
 	for (int i = 0; i < 10 && i < cnt_bar.size(); ++i)
-		cout << -cnt_bar[i].first << ' ' << decode(cnt_bar[i].second, BARCODE_LENGTH) << endl;
+		cout << cnt_bar[i].first << ' ' << decode(cnt_bar[i].second, BARCODE_LENGTH) << endl;
 
 	double *diff = (double*)malloc(cnt_bar.size() * sizeof(double));
 	for (int i = 0; i < cnt_bar.size() - 1; ++i)
 	{
-		diff[i] = cnt_bar[i].first - cnt_bar[i + 1].first;
+		diff[i] = cnt_bar[i + 1].first - cnt_bar[i].first;
 	}
 
 	double *yhat = savgol_filter(diff, cnt_bar.size() - 1, 151, 1);

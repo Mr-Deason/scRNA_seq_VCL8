@@ -415,7 +415,7 @@ double* savgol_filter(double *data, int n, int win_len, int polyorder)
 
 bool brc_cmp(pair<int, unsigned int> a, pair<int, unsigned int> b)
 {
-	return a.first > b.first;
+	return a.first >= b.first;
 }
 
 int main(int argc, char *argv[])

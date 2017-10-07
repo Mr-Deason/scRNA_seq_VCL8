@@ -560,10 +560,10 @@ int main(int argc, char *argv[])
 //---
 
 
-	sort(cnt_bar.begin(), cnt_bar.end(), brc_cmp1);
+	sort(cnt_bar.begin(), cnt_bar.end(), brc_cmp5);
 	for (int i = 0; i < 10 && i < cnt_bar.size(); ++i)
 		cout << cnt_bar[i].first << ' ' << decode(cnt_bar[i].second, BARCODE_LENGTH) << endl;
-	fp = fopen("barcodes_cnt_cpp1.txt", "w");
+	fp = fopen("barcodes_cnt_cpp5.txt", "w");
 	for (int i=0;i<cnt_bar.size();++i)
 		fprintf(fp, "%d %s\n", cnt_bar[i].first, decode(cnt_bar[i].second, BARCODE_LENGTH).c_str());
 	fclose(fp);

@@ -6,7 +6,7 @@ s0=$(date --date="$t0" +%s);
 t1=`date +'%Y-%m-%d %H:%M:%S'`
 s1=$(date --date="$t1" +%s);
 
-./error_correct_and_split $1
+./new_error_correct_and_split $1
 
 t2=`date +'%Y-%m-%d %H:%M:%S'`
 s2=$(date --date="$t2" +%s);

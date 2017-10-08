@@ -56,7 +56,7 @@ prep_TCC_matrix_cblas.o : prep_TCC_matrix_cblas.cpp
 prep_TCC_matrix_eigen : prep_TCC_matrix_eigen.o
 	$(LD) -o prep_TCC_matrix_eigen $(CFLAG) prep_TCC_matrix_eigen.o $(LIBS)
 prep_TCC_matrix_eigen.o : prep_TCC_matrix_eigen.cpp
-	$(CPP) $(INCLU) $(CFLAG) -c prep_TCC_matrix_cblas.cpp
+	$(CPP) $(INCLU) $(CFLAG) -c prep_TCC_matrix_eigen.cpp
 
 clean:
 	rm get_barcode \

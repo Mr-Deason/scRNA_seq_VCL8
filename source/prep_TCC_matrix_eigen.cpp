@@ -20,6 +20,7 @@
 #include "kseq.h"
 
 using namespace std;
+using namespace Eigen;
 namespace fs = boost::filesystem;
 namespace pt = boost::property_tree;
 

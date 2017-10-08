@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
 
 	MatrixXd TCCmat = MatrixXd::Zero(uni_rows.size(), uni_cols.size());
 	for (int i=0;i<rows.size();++i)
-		TCCmat[map_rows[rows[i]]][map_cols[cols[i]]] = data[i];
+		TCCmat(map_rows[rows[i]], map_cols[cols[i]]) = data[i];
 	double row_sum;
 	for (int i=0;i<TCCmat.rows();++i)
 	{

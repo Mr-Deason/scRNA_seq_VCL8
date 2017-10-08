@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
 	}
 
 
-	MatrixXd TCCmat = MatrixXd::Zero(uni_rows.size(), uni_cols.size());
+	RowMatrixXd TCCmat = RowMatrixXd::Zero(uni_rows.size(), uni_cols.size());
 	for (int i=0;i<rows.size();++i)
 		TCCmat(map_rows[rows[i]], map_cols[cols[i]]) = data[i];
 	double row_sum;
@@ -136,7 +136,7 @@ int main(int argc, char* argv[])
 		cout << i << endl;
 		for (int j = i+1; j < NUM_OF_CELLS; ++j)
 		{
-			dist[i][j] = (TCCmat.col(i)-TCCmat.col(j)).cwiseAbs().sum();
+			dist[i][j] = (TCCmat.row(i)-TCCmat.row(j)).cwiseAbs().sum();
 		}
 	}
 

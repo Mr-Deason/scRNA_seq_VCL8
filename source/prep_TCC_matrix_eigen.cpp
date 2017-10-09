@@ -136,7 +136,7 @@ int main(int argc, char* argv[])
 	{
 		for (int j = i+1; j < NUM_OF_CELLS; ++j)
 		{
-			dist[i][j] = (TCCmat.row(i)).cwiseAbs().sum();
+			dist[i][j] = (TCCmat.row(i)-TCCmat.row(j)).lpNorm<1>();
 		}
 	}
 

@@ -87,23 +87,6 @@ int main(int argc, char* argv[])
 
 	int NUM_OF_CELLS = uni_rows.size();
 	cout << "NUM_OF_CELLS = " << NUM_OF_CELLS << endl;
-	double** TCCmatrix = new double*[rows.size()];
-	for (int i = 0; i < uni_rows.size(); ++i)
-	{
-		TCCmatrix[i] = new double[uni_cols.size()];
-		memset(TCCmatrix[i], 0, uni_cols.size() * sizeof(double));
-	}
-	double* rows_sum = new double[uni_rows.size()];
-	memset(rows_sum, 0, uni_rows.size() * sizeof(double));
-	for (int i = 0; i < rows.size(); ++i)
-	{
-		TCCmatrix[map_rows[rows[i]]][map_cols[cols[i]]] = data[i];
-		rows_sum[map_rows[rows[i]]] += data[i];
-	}
-	for (int i = 0; i < rows.size(); ++i)
-	{
-		TCCmatrix[map_rows[rows[i]]][map_cols[cols[i]]] /= rows_sum[map_rows[rows[i]]];
-	}
 
 
 	Matrix<double, Dynamic, Dynamic, RowMajor> TCCmat = Matrix<double, Dynamic, Dynamic, RowMajor>::Zero(uni_rows.size(), uni_cols.size());
@@ -140,24 +123,13 @@ int main(int argc, char* argv[])
 		for (int j = i+1; j < NUM_OF_CELLS; ++j)
 		{
 			dist[i][j] = (row-TCCmat.row(j)).lpNorm<1>();
+			dist[j][i] = dist[i][j];
 		}
 	}
 
 	time_t tt1 = time(NULL);
 
 	cout << "time: " << (tt1 - tt0) << " s" << endl;
-
-
-	for (int i = 0; i < NUM_OF_CELLS; ++i)
-	{
-		for (int j = i+1; j < NUM_OF_CELLS; ++j)
-		{
-#pragma omp parallel for num_threads(NUM_THREADS)
-			for (int k = 0; k < uni_cols.size(); ++k)
-				dist[i][j] += fabs(TCCmatrix[i][k] - TCCmatrix[j][k]);
-			dist[j][i] = dist[i][j];
-		}
-	}
 	
 	cout << "time: " << (time(NULL) - tt1) << " s" << endl;
 	cout << "DONE" << endl;

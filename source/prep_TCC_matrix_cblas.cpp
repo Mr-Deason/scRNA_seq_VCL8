@@ -135,15 +135,15 @@ int main(int argc, char* argv[])
 	double *vec_buff = new double[uni_cols.size()];
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{
-	//#pragma omp parallel for num_threads(NUM_THREADS)
+	#pragma omp parallel for num_threads(NUM_THREADS)
 		for (int j = i+1; j < NUM_OF_CELLS; ++j)
 		{
 			cblas_dcopy(uni_cols.size(), TCCmatrix[j], 1, vec_buff, 1);
 			cblas_daxpy(uni_cols.size(), -1, TCCmatrix[i], 1, vec_buff, 1);
 			dist[i][j] = cblas_dasum(uni_cols.size(), vec_buff, 1);
-			if (dist[j][i] != dist[i][j])
+			//if (dist[j][i] != dist[i][j])
 			{
-				cout << "error" << endl;
+				//cout << "error" << endl;
 			}
 		}
 	}

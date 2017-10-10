@@ -148,9 +148,9 @@ int main(int argc, char* argv[])
 	cout << "time: " << (tt1 - tt0) << " s" << endl;
 
 
-#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{
+#pragma omp parallel for num_threads(NUM_THREADS)
 		for (int j = i+1; j < NUM_OF_CELLS; ++j)
 		{
 			for (int k = 0; k < uni_cols.size(); ++k)

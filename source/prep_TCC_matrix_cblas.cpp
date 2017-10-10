@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
 	int t0 = clock();
 	time_t tt0 = time(NULL);
 
-	#pragma omp parallel for num_threads(NUM_THREADS)
+	//#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{
 		for (int j = i+1; j < NUM_OF_CELLS; ++j)
@@ -135,7 +135,7 @@ int main(int argc, char* argv[])
 	double *vec_buff = new double[uni_cols.size()];
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{
-	#pragma omp parallel for num_threads(NUM_THREADS)
+	//#pragma omp parallel for num_threads(NUM_THREADS)
 		for (int j = i+1; j < NUM_OF_CELLS; ++j)
 		{
 			cblas_dcopy(uni_cols.size(), TCCmatrix[j], 1, vec_buff, 1);

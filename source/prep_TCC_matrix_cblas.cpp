@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
 	int cnt = 0;
 	int t0 = clock();
 	time_t tt0 = time(NULL);
-
+/*
 	//#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{
@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
 			dist[j][i] = dist[i][j];
 		}
 	}
-
+*/
 	time_t tt1 = time(NULL);
 
 	cout << "time: " << (tt1 - tt0) << " s" << endl;
@@ -135,12 +135,13 @@ int main(int argc, char* argv[])
 	double *vec_buff = new double[uni_cols.size()];
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{
-	//#pragma omp parallel for num_threads(NUM_THREADS)
+	#pragma omp parallel for num_threads(NUM_THREADS)
 		for (int j = i+1; j < NUM_OF_CELLS; ++j)
 		{
 			cblas_dcopy(uni_cols.size(), TCCmatrix[j], 1, vec_buff, 1);
 			cblas_daxpy(uni_cols.size(), -1, TCCmatrix[i], 1, vec_buff, 1);
 			dist[i][j] = cblas_dasum(uni_cols.size(), vec_buff, 1);
+			dist[j][i] = dist[i][j];
 			//if (dist[j][i] != dist[i][j])
 			{
 				//cout << "error" << endl;

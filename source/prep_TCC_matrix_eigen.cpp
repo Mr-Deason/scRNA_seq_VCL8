@@ -150,9 +150,9 @@ int main(int argc, char* argv[])
 
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{
-#pragma omp parallel for num_threads(NUM_THREADS)
 		for (int j = i+1; j < NUM_OF_CELLS; ++j)
 		{
+#pragma omp parallel for num_threads(NUM_THREADS)
 			for (int k = 0; k < uni_cols.size(); ++k)
 				dist[i][j] += fabs(TCCmatrix[i][k] - TCCmatrix[j][k]);
 			dist[j][i] = dist[i][j];

@@ -145,5 +145,13 @@ int main(int argc, char* argv[])
 	cout << "time: " << (time(NULL) - tt0) << " s" << endl;
 	cout << "DONE" << endl;
 
+	fp = fopen("pwise_dist_L1.txt", "w");
+	for (int i=0;i<NUM_THREADS;++i)
+	{
+		for (int j=0;j<NUM_THREADS;++j)
+			fprintf(fp, "%lf ", dist[i][j]);
+		fprintf(fp, "\n");
+	}
+	fclose(fp);
 	return 0;
 }

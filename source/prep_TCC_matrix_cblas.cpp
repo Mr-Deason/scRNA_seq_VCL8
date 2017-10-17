@@ -14,7 +14,7 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/foreach.hpp>  
 #include <zlib.h>
-#include <cblas.h>
+#include <openBLAS/cblas.h>
 #include "kseq.h"
 
 using namespace std;

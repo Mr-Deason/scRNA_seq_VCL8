@@ -2,7 +2,7 @@ CC = gcc
 CPP = g++
 LD = g++ -L /usr/local/lib
 
-LIBS = -lz -lboost_filesystem -lboost_system -lopenblas
+LIBS = -lz -lboost_filesystem -lboost_system 
 CFLAG = -fopenmp -std=c++11 
 INCLU = -I /home/kuangdi/downloads/eigen-3.3.4/
 

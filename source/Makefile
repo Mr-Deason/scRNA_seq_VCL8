@@ -3,7 +3,7 @@ CPP = g++
 LD = g++ -L /usr/local/lib
 
 LIBS = -lz -lboost_filesystem -lboost_system -lopenblas -lpthread
-CFLAG = -fopenmp -std=c++11 
+CFLAG = -fopenmp -std=c++11 -O3
 INCLU = -I /home/kuangdi/downloads/eigen-3.3.4/
 
 
@@ -16,7 +16,8 @@ all: get_barcode \
 	gen_shuffle_sub \
 	new_error_correct_and_split \
 	prep_TCC_matrix_cblas \
-	prep_TCC_matrix_eigen
+	prep_TCC_matrix_eigen \
+	prep_TCC_matrix_simd
 
 get_barcode : get_barcode.o
 	$(LD) -o get_barcode $(CFLAG) get_barcode.o $(LIBS)
@@ -58,6 +59,11 @@ prep_TCC_matrix_eigen : prep_TCC_matrix_eigen.o
 prep_TCC_matrix_eigen.o : prep_TCC_matrix_eigen.cpp
 	$(CPP) $(INCLU) $(CFLAG) -c prep_TCC_matrix_eigen.cpp
 
+prep_TCC_matrix_simd : prep_TCC_matrix_simd.o
+	$(LD) -o prep_TCC_matrix_simd $(CFLAG) prep_TCC_matrix_simd.o $(LIBS)
+prep_TCC_matrix_simd.o : prep_TCC_matrix_simd.cpp
+	$(CPP) $(INCLU) $(CFLAG) -c prep_TCC_matrix_simd.cpp
+
 clean:
 	rm get_barcode \
 	error_correct_and_split \
@@ -68,4 +74,5 @@ clean:
 	new_error_correct_and_split \
 	prep_TCC_matrix_cblas \
 	prep_TCC_matrix_eigen \
+	prep_TCC_matrix_simd \
 	*.o

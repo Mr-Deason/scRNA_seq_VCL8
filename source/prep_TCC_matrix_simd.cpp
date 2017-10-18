@@ -123,7 +123,7 @@ int main(int argc, char* argv[])
 		{
 			//#pragma omp parallel for num_threads(NUM_THREADS)
 			double dis = 0;
-			#pragma omp simd reduction(+:dis)
+			//#pragma omp simd reduction(+:dis)
 			for (int k = 0; k < uni_cols.size(); ++k)
 				dis += fabs(TCCmatrix[i][k] - TCCmatrix[j][k]);
 			dist[j][i] = dist[i][j] = dis;

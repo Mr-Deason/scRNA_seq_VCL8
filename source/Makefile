@@ -3,8 +3,8 @@ CPP = g++
 LD = g++ -L /usr/local/lib
 
 LIBS = -lz -lboost_filesystem -lboost_system -lopenblas -lpthread
-CFLAG = -fopenmp -std=c++11
-# -O3 -mavx -msse -msse2 -mavx2
+CFLAG = -fopenmp -std=c++11 -O3
+# -mavx -msse -msse2 -mavx2
 INCLU = -I /home/kuangdi/downloads/eigen-3.3.4/
 
 

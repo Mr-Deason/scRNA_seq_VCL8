@@ -121,9 +121,9 @@ int main(int argc, char* argv[])
 	{
 		for (int j = i+1; j < NUM_OF_CELLS; ++j)
 		{
-			//#pragma omp parallel for num_threads(NUM_THREADS)
 			double dis = 0;
-			#pragma omp simd reduction(+:dis)
+			//#pragma omp simd reduction(+:dis)
+			#pragma omp parallel for num_threads(NUM_THREADS)
 			for (int k = 0; k < uni_cols.size(); ++k)
 				dis += fabs(TCCmatrix[i][k] - TCCmatrix[j][k]);
 			dist[j][i] = dist[i][j] = dis;

@@ -3,8 +3,7 @@ CPP = g++
 LD = g++ -L /usr/local/lib
 
 LIBS = -lz -lboost_filesystem -lboost_system -lopenblas -lpthread
-CFLAG = -fopenmp -std=c++11
-# -O3 -mavx -msse -msse2 -mavx2
+CFLAG = -fopenmp -std=c++11 -O3 -mavx -msse -msse2 -mavx2
 INCLU = -I /home/kuangdi/downloads/eigen-3.3.4/
 
 
@@ -18,6 +17,7 @@ all: get_barcode \
 	new_error_correct_and_split \
 	prep_TCC_matrix_cblas \
 	prep_TCC_matrix_eigen \
+	testhamming \
 	prep_TCC_matrix_simd
 
 get_barcode : get_barcode.o
@@ -65,6 +65,12 @@ prep_TCC_matrix_simd : prep_TCC_matrix_simd.o
 prep_TCC_matrix_simd.o : prep_TCC_matrix_simd.cpp
 	$(CPP) $(INCLU) $(CFLAG) -c prep_TCC_matrix_simd.cpp
 
+
+testhamming : testhamming.o
+	$(LD) -o testhamming $(CFLAG) testhamming.o $(LIBS)
+testhamming.o : testhamming.cpp
+	$(CPP) $(INCLU) $(CFLAG) -c testhamming.cpp
+
 clean:
 	rm get_barcode \
 	error_correct_and_split \
@@ -76,4 +82,5 @@ clean:
 	prep_TCC_matrix_cblas \
 	prep_TCC_matrix_eigen \
 	prep_TCC_matrix_simd \
+	testhamming \
 	*.o

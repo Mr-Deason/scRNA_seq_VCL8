@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
 	FILE *fp;
 	string bar_file = "barcodes.dat";
 	fp = fopen((SAVE_DIR + bar_file).c_str(), "rb");
-	while (fscanf(fp, "%" SCNu64, &read) != EOF)
+	while (fscanf(fp, "%" SCNu64 "", &read) != EOF)
 		barcodes.push_back(read);
 	fclose(fp);
 	string codes_file = "codewords.dat";

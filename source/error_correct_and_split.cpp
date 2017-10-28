@@ -195,14 +195,13 @@ int main(int argc, char *argv[])
 //#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < barcodes.size(); ++i)
 	{
-		unsigned int barcode = barcodes[i];
+		uint64_t barcode = barcodes[i];
 		if (barcode_to_idx.find(barcode) != barcode_to_idx.end())
 		{
 			ret[barcode_to_idx[barcode]].push_back(i);
 		}
 		else
 		{
-			bool flag = true;
 			vector<uint64_t> cousins = hamming_circle(barcode, BARCODE_LENGTH, 1);
 			for (int j=0;j<cousins.size();++j)
 				if (brc_to_correct.find(cousins[j]) != brc_to_correct.end())

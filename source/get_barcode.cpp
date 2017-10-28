@@ -664,12 +664,12 @@ int main(int argc, char *argv[])
 	string bar_file = "barcodes.dat";
 	fp = fopen((SAVE_DIR + bar_file).c_str(), "wb");
 	for (int i = 0; i < barcodes.size(); ++i)
-		fprintf(fp, "%"PRIu64"\n", barcodes[i]);
+		fprintf(fp, "%" PRIu64 "\n", barcodes[i]);
 	fclose(fp);
 	string codes_file = "codewords.dat";
 	fp = fopen((SAVE_DIR + codes_file).c_str(), "wb");
 	for (int i = 0; i < num_barcodes; ++i)
-		fprintf(fp, "%"PRIu64"\n", codewords[i]);
+		fprintf(fp, "%" PRIu64 "\n", codewords[i]);
 	fclose(fp);
 	string brc_crt_file = "brc_idx_to_correct.dat";
 	fp = fopen((SAVE_DIR + brc_crt_file).c_str(), "wb");

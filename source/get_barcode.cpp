@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
+#include <cinttypes>
 #include <string>
 #include <vector>
 #include <map>
@@ -15,6 +16,7 @@
 #include <boost/foreach.hpp>  
 #include <zlib.h>
 #include "kseq.h"
+#include "fasthamming.hpp"
 
 using namespace std;
 namespace fs = boost::filesystem;
@@ -30,6 +32,14 @@ unsigned int code_map(char ch)
 	if (ch == 'T') return 3;
 	if (ch == 'N') return 0*(rand()%3);
 }
+uint32_t code_map_n(char ch)
+{
+	if (ch == 'A') return 0;//000
+	if (ch == 'G') return 1;//001
+	if (ch == 'C') return 2;//010
+	if (ch == 'T') return 3;//011
+	if (ch == 'N') return 4;//100
+}
 unsigned int encode(string str)
 {
 	unsigned int code = 0;
@@ -40,18 +50,37 @@ unsigned int encode(string str)
 	}
 	return code;
 }
+uint64_t encode_n(string str)
+{
+	uint64_t code = 0;
+	for (int i=0;str[i];++i)
+	{
+		code <<= 3;
+		code |= code_map_n(str[i]);
+	}
+	return code;
+}
 
-char* str_AGCT = "AGCT";
-string decode(unsigned int code, int len)
+char* str_AGCTN = "AGCTN";
+string decode(uint64_t code, int len)
 {
 	string ret;
 	ret.resize(len);
 	for (int i = 0; i < len; ++i)
 	{
-		ret[len - i - 1] = str_AGCT[code & 3];
-		code >>= 2;
+		ret[len - i - 1] = str_AGCT[code & 7];
+		code >>= 3;
 	}
 	return ret;
+}
+void devode_cstr(uint64_t code, int len, const char* str)
+{
+	str[len] = 0;
+	for (int i = 0; i < len; ++i)
+	{
+		str[len - i - 1] = str_AGCT[code & 7];
+		code >>= 3;
+	}
 }
 
 
@@ -484,7 +513,9 @@ int main(int argc, char *argv[])
 		sort(files.begin(), files.end());
 	}
 
-	vector<unsigned int> barcodes;
+	vector<uint64_t> barcodes;
+	vector<nacgt<uint64_t> > barcodes_nacgt;
+	map<uint64_t, int> barcodes_nacgt_cnt;
 	//all "read-I1_*" files
 //#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < files.size() / 2; ++i)
@@ -497,23 +528,27 @@ int main(int argc, char *argv[])
 		while ((l = kseq_read(seq1) >= 0))
 		{
 			string bar = seq1->seq.s;
+			nacgt<uint64_t> barcode(bar.c_str(), BARCODE_LENGTH);
+			barcodes_nacgt.push_back(barcode);
+			barcodes_nacgt_cnt[encode_n(bar)]++;
 			//printf("%s\n", bar.c_str());
-			barcodes.push_back(encode(bar));
+			barcodes.push_back(encode_n(bar));
 		}
 		gzclose(gfp);
 		kseq_destroy(seq1);
 	}
 
 	FILE* fp;
-	
+	/*
 	map<unsigned int, int> barcodes_cnt;
 	for (int i = 0; i < barcodes.size(); ++i)
 	{
 		barcodes_cnt[barcodes[i]]++;
 	}
+	*/
 
-	vector<pair<int, unsigned int> > cnt_bar;
-	for (map<unsigned int, int>::iterator ite = barcodes_cnt.begin(); ite != barcodes_cnt.end(); ++ite)
+	vector<pair<int, uint64_t> > cnt_bar;
+	for (map<unsigned int, int>::iterator ite = barcodes_nacgt_cnt.begin(); ite != barcodes_nacgt_cnt.end(); ++ite)
 	{
 		cnt_bar.push_back(make_pair(ite->second, ite->first));
 	}
@@ -585,7 +620,7 @@ int main(int argc, char *argv[])
 
 	int num_barcodes = border;
 	int num_reads = 0;
-	int *codewords = new int[num_barcodes];
+	uint64_t *codewords = new uint64_t[num_barcodes];
 	for (int i = 0; i < num_barcodes; ++i)
 	{
 		num_reads += cnt_bar[i].first;
@@ -597,19 +632,19 @@ int main(int argc, char *argv[])
 	for (int i = 0; i < num_barcodes; ++i)
 		dist[i] = new int[num_barcodes];
 	
+	char *buffa = (char*)malloc((BARCODE_LENGTH+1)*sizeof(char));
+	char *buffb = (char*)malloc((BARCODE_LENGTH+1)*sizeof(char));
+
+	hamming<uint64_t> hammingEval=hamming<uint64_t>(BARCODE_LENGTH);
+
 	for (int i = 0; i < num_barcodes; ++i)
 	{
-		dist[i][i] = BARCODE_LENGTH + 1;
+		dist[i][i] = (BARCODE_LENGTH + 1)*16;
 		for (int j = i + 1; j < num_barcodes; ++j)
 		{
-			dist[i][j] = 0;
-			unsigned int d = codewords[i] ^ codewords[j];
-			for (int k = 0; k < BARCODE_LENGTH; ++k)
-			{
-				if (d & 3)
-					++dist[i][j];
-				d >>= 2;
-			}
+			devode_cstr(codewords[i], BARCODE_LENGTH, buffa);
+			devode_cstr(codewords[j], BARCODE_LENGTH, buffb);
+			dist[i][j] = hammingEval.slowDistance(buffa, buffb, BARCODE_LENGTH, 1);
 			dist[j][i] = dist[i][j];
 		}
 	}
@@ -617,10 +652,10 @@ int main(int argc, char *argv[])
 	vector<int> brc_to_correct;
 	for (int i = 0; i < num_barcodes; ++i)
 	{
-		int dmin = BARCODE_LENGTH + 1;
+		int dmin = (BARCODE_LENGTH + 1)*16;
 		for (int j = 0; j < num_barcodes; ++j)
 			dmin = min(dmin, dist[i][j]);
-		if (dmin >= D_MIN)
+		if (dmin >= D_MIN*16)
 			brc_to_correct.push_back(i);
 	}
 	cout << "save" << endl;
@@ -629,12 +664,12 @@ int main(int argc, char *argv[])
 	string bar_file = "barcodes.dat";
 	fp = fopen((SAVE_DIR + bar_file).c_str(), "wb");
 	for (int i = 0; i < barcodes.size(); ++i)
-		fprintf(fp, "%u\n", barcodes[i]);
+		fprintf(fp, "%"PRIu64"\n", barcodes[i]);
 	fclose(fp);
 	string codes_file = "codewords.dat";
 	fp = fopen((SAVE_DIR + codes_file).c_str(), "wb");
 	for (int i = 0; i < num_barcodes; ++i)
-		fprintf(fp, "%u\n", codewords[i]);
+		fprintf(fp, "%"PRIu64"\n", codewords[i]);
 	fclose(fp);
 	string brc_crt_file = "brc_idx_to_correct.dat";
 	fp = fopen((SAVE_DIR + brc_crt_file).c_str(), "wb");
@@ -643,7 +678,7 @@ int main(int argc, char *argv[])
 	fclose(fp);
 
 
-	cout << "Cell_barcodes_detected: " << num_barcodes << endl;
+	cout << "Cell_barcodes_detected: " << num _barcodes << endl;
 	cout << "NUM_OF_READS_in_CELL_BARCODES = " << num_reads << endl;
 	cout << endl << "number of cell barcodes to error-correct: " << brc_to_correct.size() << endl;
 	for (int i = 0; i < num_barcodes; i++)

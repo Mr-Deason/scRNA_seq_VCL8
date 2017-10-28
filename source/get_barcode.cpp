@@ -68,7 +68,7 @@ string decode(uint64_t code, int len)
 	ret.resize(len);
 	for (int i = 0; i < len; ++i)
 	{
-		ret[len - i - 1] = str_AGCT[code & 7];
+		ret[len - i - 1] = str_AGCTN[code & 7];
 		code >>= 3;
 	}
 	return ret;
@@ -78,7 +78,7 @@ void devode_cstr(uint64_t code, int len, const char* str)
 	str[len] = 0;
 	for (int i = 0; i < len; ++i)
 	{
-		str[len - i - 1] = str_AGCT[code & 7];
+		str[len - i - 1] = str_AGCTN[code & 7];
 		code >>= 3;
 	}
 }
@@ -528,7 +528,7 @@ int main(int argc, char *argv[])
 		while ((l = kseq_read(seq1) >= 0))
 		{
 			string bar = seq1->seq.s;
-			nacgt<uint64_t> barcode(bar.c_str(), BARCODE_LENGTH);
+			nacgt<uint64_t> barcode(seq1->seq.s, BARCODE_LENGTH);
 			barcodes_nacgt.push_back(barcode);
 			barcodes_nacgt_cnt[encode_n(bar)]++;
 			//printf("%s\n", bar.c_str());
@@ -548,7 +548,7 @@ int main(int argc, char *argv[])
 	*/
 
 	vector<pair<int, uint64_t> > cnt_bar;
-	for (map<unsigned int, int>::iterator ite = barcodes_nacgt_cnt.begin(); ite != barcodes_nacgt_cnt.end(); ++ite)
+	for (map<uint64_t, int>::iterator ite = barcodes_nacgt_cnt.begin(); ite != barcodes_nacgt_cnt.end(); ++ite)
 	{
 		cnt_bar.push_back(make_pair(ite->second, ite->first));
 	}
@@ -678,7 +678,7 @@ int main(int argc, char *argv[])
 	fclose(fp);
 
 
-	cout << "Cell_barcodes_detected: " << num _barcodes << endl;
+	cout << "Cell_barcodes_detected: " << num_barcodes << endl;
 	cout << "NUM_OF_READS_in_CELL_BARCODES = " << num_reads << endl;
 	cout << endl << "number of cell barcodes to error-correct: " << brc_to_correct.size() << endl;
 	for (int i = 0; i < num_barcodes; i++)

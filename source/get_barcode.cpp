@@ -73,7 +73,7 @@ string decode(uint64_t code, int len)
 	}
 	return ret;
 }
-void devode_cstr(uint64_t code, int len, const char* str)
+void decode_cstr(uint64_t code, int len, char* str)
 {
 	str[len] = 0;
 	for (int i = 0; i < len; ++i)

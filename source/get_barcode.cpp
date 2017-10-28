@@ -642,8 +642,8 @@ int main(int argc, char *argv[])
 		dist[i][i] = (BARCODE_LENGTH + 1)*16;
 		for (int j = i + 1; j < num_barcodes; ++j)
 		{
-			devode_cstr(codewords[i], BARCODE_LENGTH, buffa);
-			devode_cstr(codewords[j], BARCODE_LENGTH, buffb);
+			decode_cstr(codewords[i], BARCODE_LENGTH, buffa);
+			decode_cstr(codewords[j], BARCODE_LENGTH, buffb);
 			dist[i][j] = hammingEval.slowDistance(buffa, buffb, BARCODE_LENGTH, 1);
 			dist[j][i] = dist[i][j];
 		}

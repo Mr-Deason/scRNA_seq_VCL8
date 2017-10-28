@@ -165,12 +165,12 @@ int main(int argc, char *argv[])
 	FILE *fp;
 	string bar_file = "barcodes.dat";
 	fp = fopen((SAVE_DIR + bar_file).c_str(), "rb");
-	while (fscanf(fp, "%" SCNu64, &read) != EOF)
+	while (fscanf(fp, "%"SCNu64, &read) != EOF)
 		barcodes.push_back(read);
 	fclose(fp);
 	string codes_file = "codewords.dat";
 	fp = fopen((SAVE_DIR + codes_file).c_str(), "rb");
-	while (fscanf(fp, "%" SCNu64, &read) != EOF)
+	while (fscanf(fp, "%"SCNu64, &read) != EOF)
 		codewords.push_back(read);
 	fclose(fp);
 	string brc_crt_file = "brc_idx_to_correct.dat";

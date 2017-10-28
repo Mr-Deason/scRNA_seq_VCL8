@@ -15,6 +15,7 @@
 #include <boost/foreach.hpp>  
 #include <zlib.h>
 #include "kseq.h"
+#include "fasthamming.hpp"
 
 using namespace std;
 namespace fs = boost::filesystem;
@@ -30,6 +31,14 @@ unsigned int code_map(char ch)
 	if (ch == 'T') return 3;
 	if (ch == 'N') return 0*(rand()%3);
 }
+uint32_t code_map_n(char ch)
+{
+	if (ch == 'A') return 0;//000
+	if (ch == 'G') return 1;//001
+	if (ch == 'C') return 2;//010
+	if (ch == 'T') return 3;//011
+	if (ch == 'N') return 4;//100
+}
 unsigned int encode(string str)
 {
 	unsigned int code = 0;
@@ -40,31 +49,50 @@ unsigned int encode(string str)
 	}
 	return code;
 }
+uint64_t encode_n(string str)
+{
+	uint64_t code = 0;
+	for (int i=0;str[i];++i)
+	{
+		code <<= 3;
+		code |= code_map_n(str[i]);
+	}
+	return code;
+}
 
-char* str_AGCT = "AGCT";
-string decode(unsigned int code, int len)
+char* str_AGCTN = "AGCTN";
+string decode(uint64_t code, int len)
 {
 	string ret;
 	ret.resize(len);
 	for (int i = 0; i < len; ++i)
 	{
-		ret[len - i - 1] = str_AGCT[code & 3];
-		code >>= 2;
+		ret[len - i - 1] = str_AGCTN[code & 7];
+		code >>= 3;
 	}
 	return ret;
 }
-
-vector<unsigned int> hamming_circle(unsigned int barcode, int len, int d)
+void decode_cstr(uint64_t code, int len, char* str)
 {
-	vector<unsigned int> cousins;
+	str[len] = 0;
+	for (int i = 0; i < len; ++i)
+	{
+		str[len - i - 1] = str_AGCTN[code & 7];
+		code >>= 3;
+	}
+}
+
+vector<uint64_t> hamming_circle(uint64_t barcode, int len, int d)
+{
+	vector<uint64_t> cousins;
 	if (d == 1)
 	{
 		for (int i = 0; i < len; ++i)
 		{
-			for (int k = 1; k < 4; ++k)
+			uint64_t b = (barcode >> (i*3)) & 7;
+			for (int k = 1; k < 5; ++k)
 			{
-				//unsigned int cousin = barcode ^ (k << (i * 2))
-				unsigned int cousin = barcode ^ (k << (i << 1));
+				uint64_t cousin = (barcode ^ (b << (i*3))) | ((b+k)%5 << (i*3));
 				cousins.push_back(cousin);
 			}
 		}
@@ -72,13 +100,19 @@ vector<unsigned int> hamming_circle(unsigned int barcode, int len, int d)
 	else if (d == 2)
 	{
 		for (int i = 0; i < len; ++i)
+		{
+			uint64_t b1 = (barcode >> (i*3)) & 7;
 			for (int j = i+1; j < len; ++j)
-				for (int k = 1; k < 4; ++k)
-					for (int l = 1; l < 4; ++l)
+			{
+				uint64_t b2 = (barcode >> (j*3)) & 7;
+				for (int k = 1; k < 5; ++k)
+					for (int l = 1; l < 5; ++l)
 					{
-						unsigned int cousin = (barcode ^ (k << (i << 1))) ^ (l << (j << 1));
+						uint64_t cousin = (((barcode ^ (b1 << (i*3))) | ((b1+k)%5 << (i*3))) ^ (b2 << (j*3))) | ((b2+l)%5 << (j*3)) ;
 						cousins.push_back(cousin);
 					}
+			}
+		}
 	}
 	else
 		cout << "invalid parameter!" << endl;
@@ -121,22 +155,22 @@ int main(int argc, char *argv[])
 	BOOST_FOREACH(pt::ptree::value_type &v, child_win)
 		WINDOWS.push_back(v.second.get_value<int>());
 
-	vector<unsigned int> barcodes;
-	vector<unsigned int> codewords;
+	vector<uint64_t> barcodes;
+	vector<uint64_t> codewords;
 	vector<int> brc_idx_to_correct;
 
-	unsigned int read;
+	uint64_t read;
 	int idx;
 
 	FILE *fp;
 	string bar_file = "barcodes.dat";
 	fp = fopen((SAVE_DIR + bar_file).c_str(), "rb");
-	while (fscanf(fp, "%u", &read) != EOF)
+	while (fscanf(fp, "%" SCNu64 , &read) != EOF)
 		barcodes.push_back(read);
 	fclose(fp);
 	string codes_file = "codewords.dat";
 	fp = fopen((SAVE_DIR + codes_file).c_str(), "rb");
-	while (fscanf(fp, "%u", &read) != EOF)
+	while (fscanf(fp, "%" SCNu64 , &read) != EOF)
 		codewords.push_back(read);
 	fclose(fp);
 	string brc_crt_file = "brc_idx_to_correct.dat";
@@ -145,11 +179,11 @@ int main(int argc, char *argv[])
 		brc_idx_to_correct.push_back(idx);
 	fclose(fp);
 
-	map<unsigned int, int> barcode_to_idx;
+	map<uint64_t, int> barcode_to_idx;
 	for (int i = 0; i < codewords.size(); ++i)
 		barcode_to_idx[codewords[i]] = i;
 
-	set<unsigned int> brc_to_correct;
+	set<uint64_t> brc_to_correct;
 	for (int i = 0; i < brc_idx_to_correct.size(); ++i)
 	{
 		brc_to_correct.insert(codewords[brc_idx_to_correct[i]]);
@@ -168,7 +202,7 @@ int main(int argc, char *argv[])
 		else
 		{
 			bool flag = true;
-			vector<unsigned int> cousins = hamming_circle(barcode, BARCODE_LENGTH, 1);
+			vector<uint64_t> cousins = hamming_circle(barcode, BARCODE_LENGTH, 1);
 			for (int j=0;j<cousins.size();++j)
 				if (brc_to_correct.find(cousins[j]) != brc_to_correct.end())
 				{
@@ -195,9 +229,9 @@ int main(int argc, char *argv[])
 		sort(files.begin(), files.end());
 	}
 
-	vector<long> line_byte_idx;
+	vector<uint64_t> line_byte_idx;
 	line_byte_idx.push_back(0);
-	long byte_cnt = 0;
+	uint64_t byte_cnt = 0;
 
 	//all "read-RA_*" files
 	cout << "merge all reads..." << endl;
@@ -228,7 +262,7 @@ int main(int argc, char *argv[])
 		fprintf(fp, "%ld\n", line_byte_idx[i]);
 	fclose(fp);
 
-	vector<long> line_byte_idx_o;
+	vector<uint64_t> line_byte_idx_o;
 	line_byte_idx_o.push_back(0);
 	byte_cnt = 0;
 
@@ -285,8 +319,8 @@ int main(int argc, char *argv[])
 		fprintf(fp_umi_list, "%s\t%s\t%s\n", filename, umi_file, fastq_gz_file);
 		for (int j = 0; j < ret[i].size(); ++j)
 		{
-			unsigned long r = ret[i][j];
-			long line = r * 8;
+			uint64_t r = ret[i][j];
+			uint64_t line = r * 8;
 			fseek(fp, line_byte_idx[line] , SEEK_SET);
 			for (;line < r*8 +6;++line)
 			{ 

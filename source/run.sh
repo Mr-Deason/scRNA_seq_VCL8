@@ -18,7 +18,7 @@ s3=$(date --date="$t3" +%s);
 
 echo "kallisto running time: "$((s3-s2))"s"
 
-./prep_TCC_matrix $1
+./prep_TCC_matrix_simd $1
 
 t4=`date +'%Y-%m-%d %H:%M:%S'`
 s4=$(date --date="$t4" +%s);

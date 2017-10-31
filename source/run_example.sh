@@ -1,0 +1,1 @@
+~/github/scRNA_seq_VCL8/source/run.sh ~/github/scRNA_seq_VCL8/example_dataset/config.json > ~/github/scRNA_seq_VCL8/example_dataset/runinfo

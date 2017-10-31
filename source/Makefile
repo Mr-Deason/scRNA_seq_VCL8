@@ -4,7 +4,7 @@ LD = g++ -L /usr/local/lib
 
 LIBS = -lz -lboost_filesystem -lboost_system -lopenblas -lpthread
 CFLAG = -fopenmp -std=c++11 -O3 -mavx -msse -msse2 -mavx2
-INCLU = -I /home/kuangdi/downloads/eigen-3.3.4/
+INCLU = 
 
 
 default: all
@@ -16,7 +16,6 @@ all: get_barcode \
 	gen_shuffle_sub \
 	new_error_correct_and_split \
 	prep_TCC_matrix_cblas \
-	prep_TCC_matrix_eigen \
 	testhamming \
 	prep_TCC_matrix_simd
 
@@ -54,11 +53,6 @@ prep_TCC_matrix_cblas : prep_TCC_matrix_cblas.o
 	$(LD) -o prep_TCC_matrix_cblas $(CFLAG) prep_TCC_matrix_cblas.o $(LIBS)
 prep_TCC_matrix_cblas.o : prep_TCC_matrix_cblas.cpp
 	$(CPP) $(CFLAG) -c prep_TCC_matrix_cblas.cpp
-
-prep_TCC_matrix_eigen : prep_TCC_matrix_eigen.o
-	$(LD) -o prep_TCC_matrix_eigen $(CFLAG) prep_TCC_matrix_eigen.o $(LIBS)
-prep_TCC_matrix_eigen.o : prep_TCC_matrix_eigen.cpp
-	$(CPP) $(INCLU) $(CFLAG) -c prep_TCC_matrix_eigen.cpp
 
 prep_TCC_matrix_simd : prep_TCC_matrix_simd.o
 	$(LD) -o prep_TCC_matrix_simd $(CFLAG) prep_TCC_matrix_simd.o $(LIBS)

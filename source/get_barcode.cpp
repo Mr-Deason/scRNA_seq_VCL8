@@ -645,8 +645,6 @@ int main(int argc, char *argv[])
 			decode_cstr(codewords[i], BARCODE_LENGTH, buffa);
 			decode_cstr(codewords[j], BARCODE_LENGTH, buffb);
 			dist[i][j] = hammingEval.slowDistance(buffa, buffb, BARCODE_LENGTH, BARCODE_LENGTH);
-			if (i < 10 && j <10)
-				cout << buffa << ' ' << buffb << ' ' << dist[i][j] << endl;
 			dist[j][i] = dist[i][j];
 		}
 	}

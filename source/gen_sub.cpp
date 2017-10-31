@@ -58,13 +58,13 @@ int main(int argc, char *argv[])
 		//sort(files.begin(), files.end());
 	}
 
-	string sub_dir = "subset_10k/";
-	string gen_dir = BASE_DIR + sub_dir;
+	string sub_dir = "100k/";
+	string gen_dir = BASE_DIR + sub_dir + "fastq_files/";
 	fs::create_directory(gen_dir);
 
 	char buff[256];
 	int buff_len = 256;
-	int subset_len = 10000;
+	int subset_len = 100000;
 	for (int i = 0; i < files.size(); ++i)
 	{
 		cout << files[i] << "..." << endl;

@@ -521,7 +521,7 @@ template <class T> class hamming{
 				}
 	 	}
 	 	else if(a[i] == 'N'){
-				dist+=15;
+				dist+=12;
 			}		
 	 }
 	 if(dist > maxdist16) return maxdist16;

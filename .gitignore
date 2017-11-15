@@ -81,3 +81,4 @@ $RECYCLE.BIN/
 /example_dataset/output/
 /example_dataset/save_dir/
 /example_dataset/TCC_output/
+/jupyter/.ipynb_checkpoints/

@@ -16,6 +16,7 @@ all: get_barcode \
 	gen_shuffle_sub \
 	new_error_correct_and_split \
 	prep_TCC_matrix_cblas \
+	prep_TCC_matrix_eigen \
 	testhamming \
 	prep_TCC_matrix_simd
 
@@ -59,6 +60,11 @@ prep_TCC_matrix_simd : prep_TCC_matrix_simd.o
 prep_TCC_matrix_simd.o : prep_TCC_matrix_simd.cpp
 	$(CPP) $(INCLU) $(CFLAG) -c prep_TCC_matrix_simd.cpp
 
+
+prep_TCC_matrix_eigen : prep_TCC_matrix_eigen.o
+	$(LD) -o prep_TCC_matrix_eigen $(CFLAG) prep_TCC_matrix_eigen.o $(LIBS)
+prep_TCC_matrix_eigen.o : prep_TCC_matrix_eigen.cpp
+	$(CPP) $(INCLU) $(CFLAG) -c prep_TCC_matrix_eigen.cpp
 
 testhamming : testhamming.o
 	$(LD) -o testhamming $(CFLAG) testhamming.o $(LIBS)

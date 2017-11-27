@@ -1,6 +1,6 @@
 CC = gcc
 CPP = g++
-LD = g++ -L /usr/local/lib /home/kuangdi/downloads/openBLAS_v0.2.20
+LD = g++ -L/usr/local/lib -L/home/kuangdi/downloads/openBLAS_v0.2.20
 
 LIBS = -lz -lboost_filesystem -lboost_system -lopenblas -lpthread
 CFLAG = -fopenmp -std=c++11 -O3 -mavx -msse -msse2 -mavx2

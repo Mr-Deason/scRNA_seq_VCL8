@@ -600,10 +600,10 @@ int main(int argc, char *argv[])
 		{
 			decode_cstr(codewords[i], BARCODE_LENGTH, buffa);
 			decode_cstr(codewords[j], BARCODE_LENGTH, buffb);
-			//dist[i][j] = hammingEval.slowDistance(buffa, buffb, BARCODE_LENGTH, BARCODE_LENGTH);
-			nacgt<uint64_t> bar_a(buffa, BARCODE_LENGTH);
-			nacgt<uint64_t> bar_b(buffb, BARCODE_LENGTH);
-			dist[i][j] = hammingEval.distance(&bar_a, &bar_b, BARCODE_LENGTH);
+			dist[i][j] = hammingEval.slowDistance(buffa, buffb, BARCODE_LENGTH, BARCODE_LENGTH);
+			//nacgt<uint64_t> bar_a(buffa, BARCODE_LENGTH);
+			//nacgt<uint64_t> bar_b(buffb, BARCODE_LENGTH);
+			//dist[i][j] = hammingEval.distance(&bar_a, &bar_b, BARCODE_LENGTH);
 			dist[j][i] = dist[i][j];
 		}
 	}

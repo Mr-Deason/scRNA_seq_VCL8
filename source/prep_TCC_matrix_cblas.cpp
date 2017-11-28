@@ -135,7 +135,7 @@ int main(int argc, char* argv[])
 	double *vec_buff = new double[uni_cols.size()];
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{
-	#pragma omp parallel for num_threads(NUM_THREADS)
+	//#pragma omp parallel for num_threads(NUM_THREADS)
 	//#pragma omp simd
 		for (int j = i+1; j < NUM_OF_CELLS; ++j)
 		{

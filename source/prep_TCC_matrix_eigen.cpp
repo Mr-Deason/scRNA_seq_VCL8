@@ -121,7 +121,7 @@ int main(int argc, char* argv[])
 	{
 		const auto &row = TCCmat.row(i);
 		//#pragma omp parallel for shared(row)
-		//#pragma omp parallel for num_threads(NUM_THREADS)
+		#pragma omp parallel for num_threads(NUM_THREADS)
 		for (int j = i+1; j < NUM_OF_CELLS; ++j)
 		{
 			dist[i][j] = (row-TCCmat.row(j)).lpNorm<1>();

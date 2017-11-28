@@ -553,46 +553,6 @@ int main(int argc, char *argv[])
 		cnt_bar.push_back(make_pair(ite->second, ite->first));
 	}
 
-//---
-/*
-	vector<pair<int, unsigned int> > cnt_bar1;
-	cnt_bar1.assign(cnt_bar.begin(), cnt_bar.end());
-	sort(cnt_bar1.begin(), cnt_bar1.end(), brc_cmp1);
-	fp = fopen("barcodes_cnt_cpp1.txt", "w");
-	for (int i=0;i<cnt_bar.size();++i)
-		fprintf(fp, "%d %s\n", cnt_bar1[i].first, decode(cnt_bar1[i].second, BARCODE_LENGTH).c_str());
-	fclose(fp);
-	
-	vector<pair<int, unsigned int> > cnt_bar2;
-	cnt_bar2.assign(cnt_bar.begin(), cnt_bar.end());
-	sort(cnt_bar2.begin(), cnt_bar2.end(), brc_cmp2);
-	fp = fopen("barcodes_cnt_cpp2.txt", "w");
-	for (int i=0;i<cnt_bar.size();++i)
-		fprintf(fp, "%d %s\n", cnt_bar2[i].first, decode(cnt_bar2[i].second, BARCODE_LENGTH).c_str());
-	fclose(fp);
-	vector<pair<int, unsigned int> > cnt_bar3;
-	vector<pair<int, unsigned int> > cnt_bar4;
-	vector<pair<int, unsigned int> > cnt_bar5;
-	cnt_bar3.assign(cnt_bar.begin(), cnt_bar.end());
-	cnt_bar4.assign(cnt_bar.begin(), cnt_bar.end());
-	cnt_bar5.assign(cnt_bar.begin(), cnt_bar.end());
-	sort(cnt_bar3.begin(), cnt_bar3.end(), brc_cmp3);
-	sort(cnt_bar4.begin(), cnt_bar4.end(), brc_cmp4);
-	sort(cnt_bar5.begin(), cnt_bar5.end(), brc_cmp5);
-	fp = fopen("barcodes_cnt_cpp3.txt", "w");
-	for (int i=0;i<cnt_bar.size();++i)
-		fprintf(fp, "%d %s\n", cnt_bar3[i].first, decode(cnt_bar3[i].second, BARCODE_LENGTH).c_str());
-	fclose(fp);
-	fp = fopen("barcodes_cnt_cpp4.txt", "w");
-	for (int i=0;i<cnt_bar.size();++i)
-		fprintf(fp, "%d %s\n", cnt_bar4[i].first, decode(cnt_bar4[i].second, BARCODE_LENGTH).c_str());
-	fclose(fp);
-	fp = fopen("barcodes_cnt_cpp5.txt", "w");
-	for (int i=0;i<cnt_bar.size();++i)
-		fprintf(fp, "%d %s\n", cnt_bar5[i].first, decode(cnt_bar5[i].second, BARCODE_LENGTH).c_str());
-	fclose(fp);
-*/
-//---
 
 
 	sort(cnt_bar.begin(), cnt_bar.end(), brc_cmp5);
@@ -635,12 +595,15 @@ int main(int argc, char *argv[])
 
 	for (int i = 0; i < num_barcodes; ++i)
 	{
-		dist[i][i] = (BARCODE_LENGTH + 1)*16;
+		dist[i][i] = (BARCODE_LENGTH + 1)*4;
 		for (int j = i + 1; j < num_barcodes; ++j)
 		{
 			decode_cstr(codewords[i], BARCODE_LENGTH, buffa);
 			decode_cstr(codewords[j], BARCODE_LENGTH, buffb);
-			dist[i][j] = hammingEval.slowDistance(buffa, buffb, BARCODE_LENGTH, BARCODE_LENGTH);
+			//dist[i][j] = hammingEval.slowDistance(buffa, buffb, BARCODE_LENGTH, BARCODE_LENGTH);
+			nacgt<uint64_t> bar_a(buffa, BARCODE_LENGTH);
+			nacgt<uint64_t> bar_b(buffb, BARCODE_LENGTH);
+			dist[i][j] = hammingEval.distance(&bar_a, &bar_b, BARCODE_LENGTH);
 			dist[j][i] = dist[i][j];
 		}
 	}
@@ -648,10 +611,10 @@ int main(int argc, char *argv[])
 	vector<int> brc_to_correct;
 	for (int i = 0; i < num_barcodes; ++i)
 	{
-		int dmin = (BARCODE_LENGTH + 1)*16;
+		int dmin = (BARCODE_LENGTH + 1)*4;
 		for (int j = 0; j < num_barcodes; ++j)
 			dmin = min(dmin, dist[i][j]);
-		if (dmin >= D_MIN*16)
+		if (dmin >= D_MIN*4)
 			brc_to_correct.push_back(i);
 	}
 	cout << "save" << endl;

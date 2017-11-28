@@ -29,8 +29,16 @@ void printBitsEndian(void *ptr, char nBytes, char endian);
 //need to keep track of Ns in separate and correct the distance
 //first estimate is bitcount(a^b);
 //then correct for NX and NN
+//All Ns will be across an X or an N and every NN will reduce the count of NX by 2 
+//so NX is number of Ns - 2*NN
 //NN=bitcount(na & nb)
-//correction factor is 16*NN+15*(2*NN-na.Ncount-nb.Ncount) added to 8*distance estimate to give 16*distance
+//Correct formula 4*distance= 4*XY + 3*NX + 3*NN 
+//rewritten in terms of what we can measure
+//2*bitcount(a^b)  =                   4XY+2NX
+//Number_of_Ns-2*bitcount(na & nb)  =       NX  
+//3*bitcount(na & nb)=                     3NN
+//
+//2*bitcount(a^b)+Number_of_Ns+bitcount(na & nb) gives 4*distance
 
 using namespace std;
 
@@ -265,6 +273,7 @@ template <class T> class nacgt{
     N.setBit(i);
 		 }
 		 Ncount= N.Ncount;
+		 A.Ncount=Ncount;
 	}
 	nacgt (const nacgt &a){
 		Ncount=a.Ncount;
@@ -336,23 +345,24 @@ template <class T> class hamming{
  	//appoximate distance 
  	for(int i=0;i<chunkSize;i++){
 			dist+=__builtin_popcountl(a->A.Tseq[i] ^ b->A.Tseq[i]);
-			if(dist > maxdist2)return maxdist*16;
+			if(dist > maxdist2)return maxdist*4;
 		}
-		if(!a->A.Ncount || !b->A.Ncount) return dist*8;
+		const int maxdist4=maxdist*4;
+	 dist=dist*2+(a->A.Ncount+b->A.Ncount);
+	 
+	 if(dist > maxdist4) return maxdist4;
+	 if(!a->A.Ncount || !b->A.Ncount) return dist; 
 		//rescale dist and account for the Ns
-	 const int maxdist16=maxdist*16;
-	 dist*=8;
+
 	 int dNN=0;
 		for(int i=0 ;i<NchunkSize;i++){
 		 const int NN=__builtin_popcountl(a->N.Tseq[i] & b->N.Tseq[i]);
-		 dist+=NN*15;
-			if(dist > maxdist16)return maxdist16;
-		 dNN+=NN;
+		 dist+=NN;
+			if(dist > maxdist4)return maxdist4;
 		}
-		dist+=(a->Ncount+b->Ncount-2*dNN)*4;	
-		 if(dist > maxdist16)return maxdist16;
-		 return dist;	
-	 }
+	 return dist;
+	}
+	
  unsigned int maxDistance (acgt<uint64_t> *panelSeqs, acgt<uint64_t> *query,int nPanelSeqs){
 		//when comparing a single query with Ns we don't have to take into account the N's since
 		//they give the same signal regardless of the panelSeq
@@ -490,41 +500,42 @@ template <class T> class hamming{
  	//appoximate distance 
  	for(int i=0;i<chunkSize;i++){
 			dist+=__builtin_popcount(a->A.Tseq[i] ^ b->A.Tseq[i]);
-			if(dist > maxdist2)return maxdist*16;
+			if(dist > maxdist2)return maxdist*4;
 		}
 		//rescale dist and account for the Ns
-	 const int maxdist16=maxdist*16;
-	 dist*=8;
+		const int maxdist4=maxdist*4;
+	 dist=dist*2+(a->A.Ncount+b->A.Ncount);
+	 if(dist > maxdist4)return maxdist4;
+	 if(!a->A.Ncount || !b->A.Ncount) return dist; 
+		//rescale dist and account for the Ns
+
 	 int dNN=0;
 		for(int i=0 ;i<NchunkSize;i++){
-			const int NN=__builtin_popcount(a->N.Tseq[i] & b->N.Tseq[i]);
-			dist+=NN*15;
-			if(dist > maxdist16)return maxdist16;
-			dNN+=NN;
+		 const int NN=__builtin_popcountl(a->N.Tseq[i] & b->N.Tseq[i]);
+		 dist+=NN;
+			if(dist > maxdist4)return maxdist4;
 		}
-		dist+=(a->Ncount+b->Ncount-2*dNN)*4;	
-		if(dist > maxdist16)return maxdist16;
-		return dist;	
+	 return dist;
 	}
 
  unsigned int slowDistance(const char *a, const char *b, unsigned int len,int maxdist){
 	 int dist=0;
-	 const int maxdist16=16*maxdist;			
-  for (unsigned int i = 0; i < len && dist<maxdist16; i++){
+	 const int maxdist4=4*maxdist;			
+  for (unsigned int i = 0; i < len; i++){
 
 	 	if(a[i] !=b[i]){
 	 		if(a[i] == 'N' || b[i] == 'N'){
-					dist+=12;
+					dist+=3;
 				}
 	 		else{
-				 dist+=16;
+				 dist+=4;
 				}
 	 	}
 	 	else if(a[i] == 'N'){
-				dist+=12;
-			}		
+				dist+=3;
+			}
+			if(dist > maxdist4) return maxdist4;		
 	 }
-	 if(dist > maxdist16) return maxdist16;
   return(dist);
 	}
 
@@ -538,24 +549,21 @@ template <class T> class hamming{
  	//appoximate distance 
  	for(int i=0;i<chunkSize;i++){
 			dist+=__builtin_popcountl(a->A.Tseq[i] ^ b->A.Tseq[i]);
-			if(dist > maxdist2)return maxdist*16;
+			if(dist > maxdist2)return maxdist*4;
 		}
-		if(!a->A.Ncount || !b->A.Ncount) return dist*8;
-		
+		const int maxdist4=maxdist*4;
+	 dist=dist*2+(a->A.Ncount+b->A.Ncount);
+	 if(dist > maxdist4)return maxdist4;
+	 if(!a->A.Ncount || !b->A.Ncount) return; 
 		//rescale dist and account for the Ns
-	 const int maxdist16=maxdist*16;
-	 dist*=8;
+
 	 int dNN=0;
 		for(int i=0 ;i<NchunkSize;i++){
-			uint32_t diff= a->N.Tseq[i] & b->N.Tseq[i];
-			const int NN=bitCountLUT[diff&0xFFFF] + bitCountLUT[diff >> 16] ;
-			dist+=NN*15;
-			if(dist > maxdist16)return maxdist16;
-			dNN+=NN;
+		 const int NN=__builtin_popcountl(a->N.Tseq[i] & b->N.Tseq[i]);
+		 dist+=NN;
+			if(dist > maxdist4)return maxdist4;
 		}
-		dist+=(a->Ncount+b->Ncount-2*dNN)*4;	
-		if(dist > maxdist16)return maxdist16;
-		return dist;	
+	 return dist;;	
 	}
 	#endif	
 };	

@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
 	int t0 = clock();
 	time_t tt0 = time(NULL);
 
-	Eigen::setNbThreads(1);
+	Eigen::setNbThreads(NUM_THREADS);
 //#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{

@@ -595,7 +595,7 @@ int main(int argc, char *argv[])
 
 	for (int i = 0; i < num_barcodes; ++i)
 	{
-		dist[i][i] = (BARCODE_LENGTH + 1)*16;
+		dist[i][i] = (BARCODE_LENGTH + 1)*4;
 		for (int j = i + 1; j < num_barcodes; ++j)
 		{
 			decode_cstr(codewords[i], BARCODE_LENGTH, buffa);
@@ -611,10 +611,10 @@ int main(int argc, char *argv[])
 	vector<int> brc_to_correct;
 	for (int i = 0; i < num_barcodes; ++i)
 	{
-		int dmin = (BARCODE_LENGTH + 1)*16;
+		int dmin = (BARCODE_LENGTH + 1)*4;
 		for (int j = 0; j < num_barcodes; ++j)
 			dmin = min(dmin, dist[i][j]);
-		if (dmin >= D_MIN*16)
+		if (dmin >= D_MIN*4)
 			brc_to_correct.push_back(i);
 	}
 	cout << "save" << endl;

@@ -91,10 +91,10 @@ int main(int argc, char* argv[])
 	}
 	vector<int> TCCidx;
 	TCCidx.push_back(0);
-	for (int i = 1; i < TCC.size(); ++i)
+	for (int i = 1; i < rows.size(); ++i)
 		if (rows[i] != rows[i-1])
 			TCCidx.push_back(i);
-	TCCidx.push_back(NUM_OF_CELLS);
+	TCCidx.push_back(rows.size());
 	cout << "NUM idx " << TCCidx.size() << endl;
 
 	cout << "Calculating pairwise L1 distances..." << endl;

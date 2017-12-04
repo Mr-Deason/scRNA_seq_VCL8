@@ -1,8 +1,8 @@
 source,size,ram
-cpp,hgmm,23718532
-cpp,293t_3t3,11860936
-cpp,aml035,11915892
-py,hgmm,32827164
-py,293t_3t3,16628716
-py,aml035,10736400
+optimized,hgmm,23718532
+optimized,293t_3t3,11860936
+optimized,aml035,11915892
+original,hgmm,32827164
+original,293t_3t3,16628716
+original,aml035,10736400
 

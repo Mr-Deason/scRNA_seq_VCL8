@@ -17,6 +17,7 @@ all: get_barcode \
 	new_error_correct_and_split \
 	prep_TCC_matrix_cblas \
 	prep_TCC_matrix_eigen \
+	prep_TCC_matrix_new \
 	testhamming \
 	prep_TCC_matrix_simd
 
@@ -66,6 +67,11 @@ prep_TCC_matrix_eigen : prep_TCC_matrix_eigen.o
 prep_TCC_matrix_eigen.o : prep_TCC_matrix_eigen.cpp
 	$(CPP) $(INCLU) $(CFLAG) -c prep_TCC_matrix_eigen.cpp
 
+prep_TCC_matrix_new : prep_TCC_matrix_new.o
+	$(LD) -o prep_TCC_matrix_new $(CFLAG) prep_TCC_matrix_new.o $(LIBS)
+prep_TCC_matrix_new.o : prep_TCC_matrix_new.cpp
+	$(CPP) $(INCLU) $(CFLAG) -c prep_TCC_matrix_new.cpp
+
 testhamming : testhamming.o
 	$(LD) -o testhamming $(CFLAG) testhamming.o $(LIBS)
 testhamming.o : testhamming.cpp
@@ -81,6 +87,7 @@ clean:
 	new_error_correct_and_split \
 	prep_TCC_matrix_cblas \
 	prep_TCC_matrix_eigen \
+	prep_TCC_matrix_new \
 	prep_TCC_matrix_simd \
 	testhamming \
 	*.o

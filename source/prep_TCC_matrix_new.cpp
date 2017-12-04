@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < rows.size(); ++i)
 		rows_sum[map_rows[rows[i]]] += data[i];
 
-	double* TCCdata = new double[NUM_OF_CELLS];
+	double* TCCdata = new double[rows.size()];
 	for (int i = 0; i < rows.size(); ++i)
 	{
 		TCCdata[i] = data[i] / rows_sum[map_rows[rows[i]]];

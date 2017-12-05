@@ -113,10 +113,10 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{	
 		//cout << endl << i << endl;
-		#pragma omp parallel for num_threads(NUM_THREADS)
 		for (int j = i + 1; j < NUM_OF_CELLS; ++j)
 		{
 			//cout << j << ' ';
+			#pragma omp parallel for num_threads(NUM_THREADS)
 			for (int p = TCCidx[i], q = TCCidx[j]; p < TCCidx[i + 1] || q < TCCidx[j + 1];)
 			{
 				//cout << p << ' ' << q << endl;

@@ -109,11 +109,11 @@ int main(int argc, char* argv[])
 	int cnt = 0;
 	int t0 = clock();
 	time_t tt0 = time(NULL);
-//
+
+	#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{	
 		//cout << endl << i << endl;
-		//#pragma omp parallel for num_threads(NUM_THREADS)
 		for (int j = i + 1; j < NUM_OF_CELLS; ++j)
 		{
 			//cout << j << ' ';

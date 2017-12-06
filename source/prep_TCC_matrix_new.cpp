@@ -9,6 +9,7 @@
 #include <set>
 #include <time.h>
 #include <omp.h>
+#include <algorithm>
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
@@ -19,6 +20,25 @@
 using namespace std;
 namespace fs = boost::filesystem;
 namespace pt = boost::property_tree;
+
+double TCCdistance(int p, int q, int lastp, int lastq, int* gene, double* TCCdata, double countSum)
+{
+	double distance = countSum;
+	while (1)
+	{
+		while (p <= lastp && gene[p] < gene[q])
+			++p;
+		if (p > lastp)
+			return distance;
+		if (gene[p] == gene[q])
+			distance -= 2*min(TCCdata[p++], TCCdata[q++]);
+		while (q <= lastq && gene[q] < gene[p])
+			++q;
+		if (q > lastq)
+			return distance;
+	}
+	return distance
+}
 
 int main(int argc, char* argv[])
 {
@@ -84,10 +104,13 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < rows.size(); ++i)
 		rows_sum[map_rows[rows[i]]] += data[i];
 
+	double* TCCsum = new double[NUM_OF_CELLS];
+	memset(TCCsum, 0, NUM_OF_CELLS * sizeof(double));
 	double* TCCdata = new double[rows.size()];
 	for (int i = 0; i < rows.size(); ++i)
 	{
 		TCCdata[i] = data[i] / rows_sum[map_rows[rows[i]]];
+		TCCsum[map_rows[rows[i]]] += TCCdata[i];
 	}
 	vector<int> TCCidx;
 	TCCidx.push_back(0);
@@ -110,7 +133,7 @@ int main(int argc, char* argv[])
 	int t0 = clock();
 	time_t tt0 = time(NULL);
 
-	#pragma omp parallel for num_threads(NUM_THREADS)
+	//#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{	
 		//cout << endl << i << endl;
@@ -138,6 +161,9 @@ int main(int argc, char* argv[])
 				}
 				++cnt;
 			}
+			double d = TCCdistance(TCCidx[i], TCCidx[j], TCCidx[i+1], TCCidx[j+1], cols, TCCdata, TCCsum[i] + TCCsum[j]);
+			if(fabs(d-dist[i][j]) > 0.000001)
+				cout << "error" << endl;
 			dist[j][i] = dist[i][j];
 		}
 	}

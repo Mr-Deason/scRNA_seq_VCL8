@@ -144,30 +144,7 @@ int main(int argc, char* argv[])
 		for (int j = i + 1; j < NUM_OF_CELLS; ++j)
 		{
 			//cout << j << ' ';
-			for (int p = TCCidx[i], q = TCCidx[j]; p < TCCidx[i + 1] || q < TCCidx[j + 1];)
-			{
-				//cout << p << ' ' << q << endl;
-				if (q >= TCCidx[j + 1] || (p < TCCidx[i + 1] && cols[p] < cols[q]))
-				{
-					dist[i][j] += TCCdata[p];
-					++p;
-				}
-				else if (p >= TCCidx[i + 1] || (q < TCCidx[j + 1] && cols[p] > cols[q]))
-				{
-					dist[i][j] += TCCdata[q];
-					++q;
-				}
-				else
-				{
-					dist[i][j] += fabs(TCCdata[p] - TCCdata[q]);
-					++p;
-					++q;
-				}
-				++cnt;
-			}
-			double d = TCCdistance(TCCidx[i], TCCidx[j], TCCidx[i+1], TCCidx[j+1], gene, TCCdata, TCCsum[i] + TCCsum[j]);
-			if(fabs(d-dist[i][j]) > 0.000001)
-				cout << "error" << endl;
+			dist[i][j] = TCCdistance(TCCidx[i], TCCidx[j], TCCidx[i+1], TCCidx[j+1], gene, TCCdata, TCCsum[i] + TCCsum[j]);
 			dist[j][i] = dist[i][j];
 		}
 	}

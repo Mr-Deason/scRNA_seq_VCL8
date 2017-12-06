@@ -17,6 +17,7 @@
 #include <zlib.h>
 #include <cblas.h>
 #include <Eigen/Dense>
+#include <Eigen/Sparse>
 #include "kseq.h"
 
 using namespace std;
@@ -91,13 +92,16 @@ int main(int argc, char* argv[])
 	Eigen::initParallel();
 
 	Matrix<double, Dynamic, Dynamic, RowMajor> TCCmat = Matrix<double, Dynamic, Dynamic, RowMajor>::Zero(uni_rows.size(), uni_cols.size());
+	SparseMatrix<double,RowMajor> TCCspMat(uni_rows.size(), uni_cols.size());
+	vector<Triplet<double> > tripletList;
 	for (int i=0;i<rows.size();++i)
-		TCCmat(map_rows[rows[i]], map_cols[cols[i]]) = data[i];
+		tripletList.push_back(Triplet<double>(map_rows[rows[i]], map_cols[cols[i]], data[i]*1.0));
+	TCCspMat.setFromTriplets(tripletList.begin(), tripletList.end());
 	double row_sum;
-	for (int i=0;i<TCCmat.rows();++i)
+	for (int i=0;i<TCCspMat.rows();++i)
 	{
-		row_sum = TCCmat.row(i).sum();
-		TCCmat.row(i) /= row_sum;
+		row_sum = TCCspMat.row(i).sum();
+		TCCspMat.row(i) /= row_sum;
 	}
 
 	cout << "Calculating pairwise L1 distances..." << endl;
@@ -119,12 +123,12 @@ int main(int argc, char* argv[])
 //#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{
-		const auto &row = TCCmat.row(i);
+		const auto &row = TCCspMat.row(i);
 		//#pragma omp parallel for shared(row)
 		#pragma omp parallel for num_threads(NUM_THREADS)
 		for (int j = i+1; j < NUM_OF_CELLS; ++j)
 		{
-			dist[i][j] = (row-TCCmat.row(j)).lpNorm<1>();
+			dist[i][j] = (row-TCCspMat.row(j)).lpNorm<1>();
 			dist[j][i] = dist[i][j];
 		}
 	}

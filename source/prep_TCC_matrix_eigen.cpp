@@ -128,7 +128,8 @@ int main(int argc, char* argv[])
 		#pragma omp parallel for num_threads(NUM_THREADS)
 		for (int j = i+1; j < NUM_OF_CELLS; ++j)
 		{
-			dist[i][j] = (row-TCCspMat.row(j)).lpNorm<1>();
+			//dist[i][j] = (row-TCCspMat.row(j)).lpNorm<1>();
+			dist[i][j] = (row-TCCspMat.row(j)).abs().sum();
 			dist[j][i] = dist[i][j];
 		}
 	}

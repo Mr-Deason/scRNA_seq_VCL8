@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
 
 	Eigen::initParallel();
 
-	Matrix<double, Dynamic, Dynamic, RowMajor> TCCmat = Matrix<double, Dynamic, Dynamic, RowMajor>::Zero(uni_rows.size(), uni_cols.size());
+	//Matrix<double, Dynamic, Dynamic, RowMajor> TCCmat = Matrix<double, Dynamic, Dynamic, RowMajor>::Zero(uni_rows.size(), uni_cols.size());
 	SparseMatrix<double,RowMajor> TCCspMat(uni_rows.size(), uni_cols.size());
 	vector<Triplet<double> > tripletList;
 	for (int i=0;i<rows.size();++i)
@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
 	int t0 = clock();
 	time_t tt0 = time(NULL);
 
-	Eigen::setNbThreads(NUM_THREADS);
+	//Eigen::setNbThreads(NUM_THREADS);
 //#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{

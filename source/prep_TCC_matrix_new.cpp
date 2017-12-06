@@ -26,15 +26,15 @@ double TCCdistance(int p, int q, int lastp, int lastq, int* gene, double* TCCdat
 	double distance = countSum;
 	while (1)
 	{
-		while (p <= lastp && gene[p] < gene[q])
+		while (p < lastp && gene[p] < gene[q])
 			++p;
-		if (p > lastp)
+		if (p >= lastp)
 			return distance;
 		if (gene[p] == gene[q])
 			distance -= 2*min(TCCdata[p++], TCCdata[q++]);
-		while (q <= lastq && gene[q] < gene[p])
+		while (q < lastq && gene[q] < gene[p])
 			++q;
-		if (q > lastq)
+		if (q >= lastq)
 			return distance;
 	}
 	return distance;

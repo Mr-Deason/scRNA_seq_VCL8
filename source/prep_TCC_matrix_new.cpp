@@ -37,7 +37,7 @@ double TCCdistance(int p, int q, int lastp, int lastq, int* gene, double* TCCdat
 		if (q > lastq)
 			return distance;
 	}
-	return distance
+	return distance;
 }
 
 int main(int argc, char* argv[])

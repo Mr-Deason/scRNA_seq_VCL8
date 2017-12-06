@@ -97,6 +97,10 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < uni_rows.size(); ++i)
 		map_rows[uni_rows[i]] = i;
 
+	int* gene = new int[cols.size()];
+	for (int i=0;i<cols.size();++i)
+		gene[i] = cols[i];
+
 	int NUM_OF_CELLS = uni_rows.size();
 	cout << "NUM_OF_CELLS = " << NUM_OF_CELLS << endl;
 	double* rows_sum = new double[NUM_OF_CELLS];
@@ -161,7 +165,7 @@ int main(int argc, char* argv[])
 				}
 				++cnt;
 			}
-			double d = TCCdistance(TCCidx[i], TCCidx[j], TCCidx[i+1], TCCidx[j+1], cols, TCCdata, TCCsum[i] + TCCsum[j]);
+			double d = TCCdistance(TCCidx[i], TCCidx[j], TCCidx[i+1], TCCidx[j+1], gene, TCCdata, TCCsum[i] + TCCsum[j]);
 			if(fabs(d-dist[i][j]) > 0.000001)
 				cout << "error" << endl;
 			dist[j][i] = dist[i][j];

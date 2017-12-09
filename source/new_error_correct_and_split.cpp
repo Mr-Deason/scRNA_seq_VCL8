@@ -322,7 +322,7 @@ int main(int argc, char *argv[])
 	fclose(fp_umi_list);
 
 	cout << "sssss" << endl;
-//#pragma omp parallel for num_threads(NUM_THREADS)
+#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < codewords.size(); ++i)
 	{
 		split_cell(i, codewords[i], BARCODE_LENGTH, ret[i], SAVE_DIR+all_reads_file, OUTPUT_DIR, line_byte_idx);

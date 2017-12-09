@@ -323,7 +323,7 @@ int main(int argc, char *argv[])
 #pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < codewords.size(); ++i)
 	{
-		split_cell(i, codewords[i], BARCODE_LENGTH, ret[i], output_dir+umi_read_file, output_dir, line_byte_idx);
+		split_cell(i, codewords[i], BARCODE_LENGTH, ret[i], OUTPUT_DIR+umi_read_file, OUTPUT_DIR, line_byte_idx);
 	}
 
 	int t5 = clock();

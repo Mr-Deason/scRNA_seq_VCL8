@@ -125,7 +125,7 @@ void split_cell(int cellId, string codeword, int BARCODE_LENGTH, vector<int> &re
 {
 	FILE* fp = fopen(all_reads_file.c_str(), "r");
 	char filename[40], fastq_file[100], fastq_gz_file[100], umi_file[100];
-	sprintf(filename, "cell_%04d_%s", cellId, decode(codewords, BARCODE_LENGTH).c_str());
+	sprintf(filename, "cell_%04d_%s", cellId, decode(codeword, BARCODE_LENGTH).c_str());
 	sprintf(fastq_file, "%s%s.fastq", OUTPUT_DIR.c_str(), filename);
 	sprintf(fastq_gz_file, "%s%s.fastq.gz", OUTPUT_DIR.c_str(), filename);
 	sprintf(umi_file, "%s%s.umi", OUTPUT_DIR.c_str(), filename);

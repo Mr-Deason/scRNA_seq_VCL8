@@ -152,9 +152,11 @@ void split_cell(int cellId, uint64_t codeword, int BARCODE_LENGTH, vector<int> &
 				fputs(buff, fum);
 		}
 	}
-	cout << endl;
+	if (cellId == 1019)
+		cout << endl;
 	fclose(ffq);
 	fclose(fum);
+	fclose(fp);
 
 }
 

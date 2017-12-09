@@ -136,6 +136,8 @@ void split_cell(int cellId, uint64_t codeword, int BARCODE_LENGTH, vector<int> &
 	int buff_len = 1024;
 	for (int j = 0; j < ret.size(); ++j)
 	{
+		if (cellId == 1019)
+			cout << ret[j] << ' ';
 		uint64_t r = ret[j];
 		uint64_t line = r * 8;
 		fseek(fp, line_byte_idx[line] , SEEK_SET);
@@ -150,6 +152,7 @@ void split_cell(int cellId, uint64_t codeword, int BARCODE_LENGTH, vector<int> &
 				fputs(buff, fum);
 		}
 	}
+	cout << endl;
 	fclose(ffq);
 	fclose(fum);
 

@@ -136,8 +136,6 @@ void split_cell(int cellId, uint64_t codeword, int BARCODE_LENGTH, vector<int> &
 	int buff_len = 1024;
 	for (int j = 0; j < ret.size(); ++j)
 	{
-		if (cellId == 1019)
-			cout << ret[j] << ' ';
 		uint64_t r = ret[j];
 		uint64_t line = r * 8;
 		fseek(fp, line_byte_idx[line] , SEEK_SET);
@@ -152,8 +150,6 @@ void split_cell(int cellId, uint64_t codeword, int BARCODE_LENGTH, vector<int> &
 				fputs(buff, fum);
 		}
 	}
-	if (cellId == 1019)
-		cout << endl;
 	fclose(ffq);
 	fclose(fum);
 	fclose(fp);
@@ -329,7 +325,7 @@ int main(int argc, char *argv[])
 //#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < codewords.size(); ++i)
 	{
-		split_cell(i, codewords[i], BARCODE_LENGTH, ret[i], OUTPUT_DIR+umi_read_file, OUTPUT_DIR, line_byte_idx);
+		split_cell(i, codewords[i], BARCODE_LENGTH, ret[i], SAVE_DIR+all_reads_file, OUTPUT_DIR, line_byte_idx);
 	}
 
 	int t5 = clock();

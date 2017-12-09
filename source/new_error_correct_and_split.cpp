@@ -320,7 +320,8 @@ int main(int argc, char *argv[])
 	}
 	fclose(fp_umi_list);
 
-#pragma omp parallel for num_threads(NUM_THREADS)
+	cout << "sssss" << endl;
+//#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < codewords.size(); ++i)
 	{
 		split_cell(i, codewords[i], BARCODE_LENGTH, ret[i], OUTPUT_DIR+umi_read_file, OUTPUT_DIR, line_byte_idx);

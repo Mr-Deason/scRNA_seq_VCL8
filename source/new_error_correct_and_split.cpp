@@ -121,7 +121,7 @@ vector<uint64_t> hamming_circle(uint64_t barcode, int len, int d)
 	return cousins;
 }
 
-void split_cell(int cellId, string codeword, int BARCODE_LENGTH, vector<int> &ret, string all_reads_file, string OUTPUT_DIR, vector<uint64_t> &line_byte_idx)
+void split_cell(int cellId, uint64_t codeword, int BARCODE_LENGTH, vector<int> &ret, string all_reads_file, string OUTPUT_DIR, vector<uint64_t> &line_byte_idx)
 {
 	FILE* fp = fopen(all_reads_file.c_str(), "r");
 	char filename[40], fastq_file[100], fastq_gz_file[100], umi_file[100];

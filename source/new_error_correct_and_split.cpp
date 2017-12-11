@@ -170,7 +170,7 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	int t0 = clock();
+	int t0 = time((time_t*)NULL);
 
 	pt::ptree root;
 	pt::read_json(argv[1], root);
@@ -249,7 +249,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	int t1 = clock();
+	int t1 = time((time_t*)NULL);
 	int NUM_OF_READS_in_CELL_BARCODES = 0;
 	for (int i = 0; i < codewords.size(); ++i)
 		NUM_OF_READS_in_CELL_BARCODES += ret[i].size();
@@ -283,13 +283,13 @@ int main(int argc, char *argv[])
 	cmd += "> " + SAVE_DIR+all_reads_file + ".gz";
 	system(cmd.c_str());
 
-	int t2 = clock();
+	int t2 = time((time_t*)NULL);
 
 	cout << "gunzip..." << endl;
 	cmd = "gunzip -f " + SAVE_DIR+all_reads_file + ".gz";
 	system(cmd.c_str());
 
-	int t3 = clock();
+	int t3 = time((time_t*)NULL);
 	cout << "line_offset..." << endl;
 	fp = fopen((SAVE_DIR+all_reads_file).c_str(), "r");
 	while (fgets(buff, buff_len, fp))
@@ -300,7 +300,7 @@ int main(int argc, char *argv[])
 	}
 	fclose(fp);
 
-	int t4 = clock();
+	int t4 = time((time_t*)NULL);
 
 	string umi_read_file = "umi_read_list.txt";
 	fs::path output_dir(OUTPUT_DIR.c_str());
@@ -328,14 +328,14 @@ int main(int argc, char *argv[])
 		split_cell(i, codewords[i], BARCODE_LENGTH, ret[i], SAVE_DIR+all_reads_file, OUTPUT_DIR, line_byte_idx);
 	}
 
-	int t5 = clock();
+	int t5 = time((time_t*)NULL);
 
 #pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i=0;i<output_fastqs.size();++i)
 	{
 		system(("gzip -f " + output_fastqs[i]).c_str());
 	}
-	int t6 = clock();
+	int t6 = time((time_t*)NULL);
 
 	cout << "calc ret " <<  (t1 - t0) << endl;
 	cout << "merge " << (t2 - t1) << endl;

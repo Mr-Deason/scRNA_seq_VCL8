@@ -321,7 +321,7 @@ int main(int argc, char *argv[])
 	}
 	fclose(fp_umi_list);
 
-//#pragma omp parallel for num_threads(NUM_THREADS)
+#pragma omp parallel for num_threads(NUM_THREADS)
 	for (int i = 0; i < codewords.size(); ++i)
 	{
 		split_cell(i, codewords[i], BARCODE_LENGTH, ret[i], SAVE_DIR+all_reads_file, OUTPUT_DIR, line_byte_idx);
@@ -336,14 +336,14 @@ int main(int argc, char *argv[])
 	}
 	int t6 = time((time_t*)NULL);
 
-	cout << "calc ret " <<  (t1 - t0) << endl;
-	cout << "merge " << (t2 - t1) << endl;
+	cout << "merge " <<  (t1 - t0) << endl;
+	cout << "cat " << (t2 - t1) << endl;
 	cout << "gunzip " << (t3 - t2) << endl;
 	cout << "line_offset " << (t4 - t3) << endl;
 	cout << "split " << (t5 - t4) << endl;
 	cout << "gzip " << (t6 - t5) << endl;
 
-	cout << "2(a).error correct " << (t1 - t0) << endl;
+	cout << "2(a).merge barcodes " << (t1 - t0) << endl;
 	cout << "2(b).IO " << (t6 - t1) << endl;
 	return 0;
 }

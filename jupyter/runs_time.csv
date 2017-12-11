@@ -1,4 +1,4 @@
-source,size,1.get barcode,2(a).error correct,2(b).IO,3.kallisto,4.compute TCC,all
+source,size,1.get barcode,2(a).merge barcodes,2(b).IO,3.kallisto,4.compute TCC,all
 optimized,10k, 1, 1,10, 23, 2, 27
 optimized,100k, 2, 7,10, 25, 8, 42
 optimized,1m, 17, 74,10, 49, 24, 164

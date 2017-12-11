@@ -111,24 +111,9 @@ int main(int argc, char* argv[])
 	}
 
 
-
-	cout << uni_cols.size() << endl;
 	int cnt = 0;
 	int t0 = clock();
 	time_t tt0 = time(NULL);
-/*
-	//#pragma omp parallel for num_threads(NUM_THREADS)
-	for (int i = 0; i < NUM_OF_CELLS; ++i)
-	{
-		for (int j = i+1; j < NUM_OF_CELLS; ++j)
-		{
-			for (int k = 0; k < uni_cols.size(); ++k)
-				dist[i][j] += fabs(TCCmatrix[i][k] - TCCmatrix[j][k]);
-			dist[j][i] = dist[i][j];
-		}
-	}
-*/
-	time_t tt1 = time(NULL);
 
 	cout << "time: " << (tt1 - tt0) << " s" << endl;
 
@@ -147,7 +132,7 @@ int main(int argc, char* argv[])
 	}
 
 	
-	cout << "time: " << (time(NULL) - tt1) << " s" << endl;
+	cout << "time: " << (time(NULL) - tt0) << " s" << endl;
 	cout << "DONE" << endl;
 
 	string pwise_dist_file = SAVE_DIR + "pwise_dist_L1.txt";

@@ -113,10 +113,7 @@ int main(int argc, char* argv[])
 	}
 
 
-
-	cout << uni_cols.size() << endl;
 	int cnt = 0;
-	int t0 = clock();
 	time_t tt0 = time(NULL);
 
 	//Eigen::setNbThreads(NUM_THREADS);
@@ -134,12 +131,7 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	time_t tt1 = time(NULL);
-
-	cout << "time: " << (tt1 - tt0) << " s" << endl;
-	
 	cout << "time: " << (time(NULL) - tt1) << " s" << endl;
-	cout << "DONE" << endl;
 
 	string pwise_dist_file = SAVE_DIR + "pwise_dist_L1.txt";
 	fp = fopen(pwise_dist_file.c_str(), "w");

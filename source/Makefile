@@ -14,10 +14,10 @@ all: get_barcode \
 	prep_TCC_matrix \
 	gen_sub \
 	gen_shuffle_sub \
-	new_error_correct_and_split \
+	error_correct_and_split_old \
 	prep_TCC_matrix_cblas \
 	prep_TCC_matrix_eigen \
-	prep_TCC_matrix_new \
+	prep_TCC_matrix_old \
 	testhamming \
 	prep_TCC_matrix_simd
 
@@ -46,10 +46,10 @@ gen_shuffle_sub : gen_shuffle_sub.o
 gen_shuffle_sub.o : gen_shuffle_sub.cpp
 	$(CPP) $(CFLAG) -c gen_shuffle_sub.cpp
 
-new_error_correct_and_split : new_error_correct_and_split.o
-	$(LD) -o new_error_correct_and_split $(CFLAG) new_error_correct_and_split.o $(LIBS)
-new_error_correct_and_split.o : new_error_correct_and_split.cpp
-	$(CPP) $(CFLAG) -c new_error_correct_and_split.cpp
+error_correct_and_split_old : error_correct_and_split_old.o
+	$(LD) -o error_correct_and_split_old $(CFLAG) error_correct_and_split_old.o $(LIBS)
+error_correct_and_split_old.o : error_correct_and_split_old.cpp
+	$(CPP) $(CFLAG) -c error_correct_and_split_old.cpp
 
 prep_TCC_matrix_cblas : prep_TCC_matrix_cblas.o
 	$(LD) -o prep_TCC_matrix_cblas $(CFLAG) prep_TCC_matrix_cblas.o $(LIBS)
@@ -67,10 +67,10 @@ prep_TCC_matrix_eigen : prep_TCC_matrix_eigen.o
 prep_TCC_matrix_eigen.o : prep_TCC_matrix_eigen.cpp
 	$(CPP) $(INCLU) $(CFLAG) -c prep_TCC_matrix_eigen.cpp
 
-prep_TCC_matrix_new : prep_TCC_matrix_new.o
-	$(LD) -o prep_TCC_matrix_new $(CFLAG) prep_TCC_matrix_new.o $(LIBS)
-prep_TCC_matrix_new.o : prep_TCC_matrix_new.cpp
-	$(CPP) $(INCLU) $(CFLAG) -c prep_TCC_matrix_new.cpp
+prep_TCC_matrix_old : prep_TCC_matrix_old.o
+	$(LD) -o prep_TCC_matrix_old $(CFLAG) prep_TCC_matrix_old.o $(LIBS)
+prep_TCC_matrix_old.o : prep_TCC_matrix_old.cpp
+	$(CPP) $(INCLU) $(CFLAG) -c prep_TCC_matrix_old.cpp
 
 testhamming : testhamming.o
 	$(LD) -o testhamming $(CFLAG) testhamming.o $(LIBS)
@@ -84,10 +84,10 @@ clean:
 	prep_TCC_matrix \
 	gen_sub \
 	gen_shuffle_sub \
-	new_error_correct_and_split \
+	error_correct_and_split_old \
 	prep_TCC_matrix_cblas \
 	prep_TCC_matrix_eigen \
-	prep_TCC_matrix_new \
+	prep_TCC_matrix_old \
 	prep_TCC_matrix_simd \
 	testhamming \
 	*.o

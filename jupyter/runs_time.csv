@@ -1,17 +1,17 @@
-source,size,1.get barcode,2.error correct,3.kallisto,4.compute TCC,all
-optimized,10k, 1, 1, 23, 2, 27
-optimized,100k, 2, 7, 25, 8, 42
-optimized,1m, 17, 74, 49, 24, 164
-optimized,5m, 90, 381, 155, 39, 665
-optimized,10m, 193, 768, 276, 53, 1290
-optimized,hgmm, 263, 1053, 390, 58, 1764
-original,10k, 12, 3, 23, 105, 143
-original,100k, 13, 16, 25, 108, 162
-original,1m, 27, 154, 51, 131, 363
-original,5m, 91, 850, 153, 198, 1292
-original,10m, 171, 1820, 278, 250, 2519
-original,hgmm, 264, 2447, 404, 294, 3409
-optimized,293t_3t3, 126, 569, 204, 21, 920
-original,293t_3t3, 95, 1082, 201, 129, 1507
-optimized,aml035, 93, 356, 77, 5, 531
-original,aml035, 64, 896, 78, 36, 1074
+source,size,1.get barcode,2(a).error correct,2(b).IO,3.kallisto,4.compute TCC,all
+optimized,10k, 1, 1,10, 23, 2, 27
+optimized,100k, 2, 7,10, 25, 8, 42
+optimized,1m, 17, 74,10, 49, 24, 164
+optimized,5m, 90, 381,10, 155, 39, 665
+optimized,10m, 193, 768,10, 276, 53, 1290
+optimized,hgmm, 263, 1053,10, 390, 58, 1764
+original,10k, 12, 3,10, 23, 105, 143
+original,100k, 13, 16,10, 25, 108, 162
+original,1m, 27, 154,10, 51, 131, 363
+original,5m, 91, 850,10, 153, 198, 1292
+original,10m, 171, 1820,10, 278, 250, 2519
+original,hgmm, 264, 2447,10, 404, 294, 3409
+optimized,293t_3t3, 126, 569,10, 204, 21, 920
+original,293t_3t3, 95, 1082,10, 201, 129, 1507
+optimized,aml035, 93, 356,10, 77, 5, 531
+original,aml035, 64, 896,10, 78, 36, 1074

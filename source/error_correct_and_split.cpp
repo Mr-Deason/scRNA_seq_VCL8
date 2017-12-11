@@ -61,6 +61,7 @@ uint64_t encode_n(string str)
 	return code;
 }
 
+
 char* str_AGCTN = "AGCTN";
 string decode(uint64_t code, int len)
 {
@@ -120,6 +121,41 @@ vector<uint64_t> hamming_circle(uint64_t barcode, int len, int d)
 	return cousins;
 }
 
+void split_cell(int cellId, uint64_t codeword, int BARCODE_LENGTH, vector<int> &ret, string all_reads_file, string OUTPUT_DIR, vector<uint64_t> &line_byte_idx)
+{
+	FILE* fp = fopen(all_reads_file.c_str(), "r");
+	char filename[40], fastq_file[100], fastq_gz_file[100], umi_file[100];
+	sprintf(filename, "cell_%04d_%s", cellId, decode(codeword, BARCODE_LENGTH).c_str());
+	sprintf(fastq_file, "%s%s.fastq", OUTPUT_DIR.c_str(), filename);
+	sprintf(fastq_gz_file, "%s%s.fastq.gz", OUTPUT_DIR.c_str(), filename);
+	sprintf(umi_file, "%s%s.umi", OUTPUT_DIR.c_str(), filename);
+	FILE *ffq = fopen(fastq_file, "wb");
+	FILE *fum = fopen(umi_file, "wb");
+
+	char buff[1024];
+	int buff_len = 1024;
+	for (int j = 0; j < ret.size(); ++j)
+	{
+		uint64_t r = ret[j];
+		uint64_t line = r * 8;
+		fseek(fp, line_byte_idx[line] , SEEK_SET);
+		for (;line < r*8 +6;++line)
+		{ 
+			fgets(buff, buff_len, fp);
+			if (line < r * 8 + 4)
+			{
+				fputs(buff, ffq);
+			}
+			if (line > r * 8 + 4)
+				fputs(buff, fum);
+		}
+	}
+	fclose(ffq);
+	fclose(fum);
+	fclose(fp);
+
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -134,7 +170,7 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	int t0 = clock();
+	int t0 = time((time_t*)NULL);
 
 	pt::ptree root;
 	pt::read_json(argv[1], root);
@@ -202,6 +238,7 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
+			bool flag = true;
 			vector<uint64_t> cousins = hamming_circle(barcode, BARCODE_LENGTH, 1);
 			for (int j=0;j<cousins.size();++j)
 				if (brc_to_correct.find(cousins[j]) != brc_to_correct.end())
@@ -212,7 +249,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	int t1 = clock();
+	int t1 = time((time_t*)NULL);
 	int NUM_OF_READS_in_CELL_BARCODES = 0;
 	for (int i = 0; i < codewords.size(); ++i)
 		NUM_OF_READS_in_CELL_BARCODES += ret[i].size();
@@ -233,124 +270,80 @@ int main(int argc, char *argv[])
 	line_byte_idx.push_back(0);
 	uint64_t byte_cnt = 0;
 
-	//all "read-RA_*" files
-	cout << "merge all reads..." << endl;
-	string all_reads_file = "all_reads.fastq";
-	fp = fopen((SAVE_DIR+all_reads_file).c_str(), "wb");
 	char buff[1024];
 	int buff_len = 1024;
-	for (int i = files.size() / 2; i < files.size(); ++i)
-	{
-		cout << files[i] << endl;
-		gzFile gfp = gzopen(files[i].c_str(), "r");
-		while (gzgets(gfp, buff, buff_len))
-		{
-			int len = strlen(buff);
-			fputs(buff, fp);
-			line_byte_idx.push_back(byte_cnt + len);
-			byte_cnt += len;
-		}
-		gzclose(gfp);
-	}
-	fclose(fp);
-
-	int t2 = clock();
-	/*
-	string line_byte_idx_ = "line_byte_idx";
-	fp = fopen((SAVE_DIR+line_byte_idx_).c_str(), "wb");
-	for (int i=0;i<line_byte_idx.size();++i)
-		fprintf(fp, "%ld\n", line_byte_idx[i]);
-	fclose(fp);
-
-	vector<uint64_t> line_byte_idx_o;
-	line_byte_idx_o.push_back(0);
-	byte_cnt = 0;
 
 	//all "read-RA_*" files
+
 	cout << "merge all reads..." << endl;
-	fp = fopen((SAVE_DIR+all_reads_file).c_str(), "wb");
+	string all_reads_file = "all_reads.fastq";
+	string cmd = "cat ";
 	for (int i = files.size() / 2; i < files.size(); ++i)
+		cmd += files[i] + " ";
+	cmd += "> " + SAVE_DIR+all_reads_file + ".gz";
+	system(cmd.c_str());
+
+	int t2 = time((time_t*)NULL);
+
+	cout << "gunzip..." << endl;
+	cmd = "gunzip -f " + SAVE_DIR+all_reads_file + ".gz";
+	system(cmd.c_str());
+
+	int t3 = time((time_t*)NULL);
+	cout << "line_offset..." << endl;
+	fp = fopen((SAVE_DIR+all_reads_file).c_str(), "r");
+	while (fgets(buff, buff_len, fp))
 	{
-		gzFile gfp = gzopen(files[i].c_str(), "r");
-		int len;
-		while (len = gzread(gfp, buff, buff_len))
-		{
-			fwrite(buff, sizeof(char), len, fp);
-			for (int j = 0; j < len; ++j)
-			{
-				if (buff[j] == '\n')
-					line_byte_idx_o.push_back(byte_cnt + j + 1);
-			}
-			byte_cnt += len + 1;
-			if (len < buff_len)
-				break;
-		}
-		gzclose(gfp);
+		int len = strlen(buff);
+		line_byte_idx.push_back(byte_cnt + len);
+		byte_cnt += len;
 	}
 	fclose(fp);
 
-	string line_byte_idx_ori = "line_byte_idx_ori";
-	fp = fopen((SAVE_DIR+line_byte_idx_ori).c_str(), "wb");
-	for (int i=0;i<line_byte_idx_o.size();++i)
-		fprintf(fp, "%ld\n", line_byte_idx_o[i]);
+	int t4 = time((time_t*)NULL);
 
-	line_byte_idx = line_byte_idx_o;
-
-	*/
-
-	fp = fopen((SAVE_DIR+all_reads_file).c_str(), "r");
 	string umi_read_file = "umi_read_list.txt";
 	fs::path output_dir(OUTPUT_DIR.c_str());
 	fs::create_directory(output_dir);
 	FILE *fp_umi_list = fopen((OUTPUT_DIR+umi_read_file).c_str(), "wb");
 	int flag = 0;
+	vector<string> output_fastqs;
 	char filename[40], fastq_file[100], fastq_gz_file[100], umi_file[100];
 	for (int i = 0; i < codewords.size(); ++i)
 	{
 		sprintf(filename, "cell_%04d_%s", i, decode(codewords[i], BARCODE_LENGTH).c_str());
-		//sprintf(fastq_file, "%s%s.fastq", OUTPUT_DIR.c_str(), filename);
+		sprintf(fastq_file, "%s%s.fastq", OUTPUT_DIR.c_str(), filename);
 		sprintf(fastq_gz_file, "%s%s.fastq.gz", OUTPUT_DIR.c_str(), filename);
 		sprintf(umi_file, "%s%s.umi", OUTPUT_DIR.c_str(), filename);
-		//FILE *ffq = fopen(fastq_file, "wb");
-		FILE *fum = fopen(umi_file, "wb");
-		gzFile gffq = gzopen(fastq_gz_file, "w");
-		//cout << "writing " << filename << endl;
 
 		fprintf(fp_umi_list, "%s\t%s\t%s\n", filename, umi_file, fastq_gz_file);
-		for (int j = 0; j < ret[i].size(); ++j)
-		{
-			uint64_t r = ret[i][j];
-			uint64_t line = r * 8;
-			fseek(fp, line_byte_idx[line] , SEEK_SET);
-			for (;line < r*8 +6;++line)
-			{ 
-				//int len = line_byte_idx[line + 1] - line_byte_idx[line];
-				//fread(buff, sizeof(char), len, fp);
-				fgets(buff, buff_len, fp);
-				if (line < r * 8 + 4)
-				{
-					//fwrite(buff, sizeof(char), len, ffq);
-					//fputs(buff, ffq);
-					//gzwrite(gffq, buff, len);
-					gzputs(gffq, buff);
-				}
-				if (line > r * 8 + 4)
-					//fwrite(buff, sizeof(char), len, fum);
-					fputs(buff, fum);
-			}
-		}
-		//fclose(ffq);
-		gzclose(gffq);
-		fclose(fum);
+		output_fastqs.push_back(fastq_file);
 	}
-	fclose(fp);
 	fclose(fp_umi_list);
 
-	int t3 = clock();
+//#pragma omp parallel for num_threads(NUM_THREADS)
+	for (int i = 0; i < codewords.size(); ++i)
+	{
+		split_cell(i, codewords[i], BARCODE_LENGTH, ret[i], SAVE_DIR+all_reads_file, OUTPUT_DIR, line_byte_idx);
+	}
+
+	int t5 = time((time_t*)NULL);
+
+#pragma omp parallel for num_threads(NUM_THREADS)
+	for (int i=0;i<output_fastqs.size();++i)
+	{
+		system(("gzip -f " + output_fastqs[i]).c_str());
+	}
+	int t6 = time((time_t*)NULL);
 
 	cout << "calc ret " <<  (t1 - t0) << endl;
 	cout << "merge " << (t2 - t1) << endl;
-	cout << "split " << (t3 - t2) << endl;
+	cout << "gunzip " << (t3 - t2) << endl;
+	cout << "line_offset " << (t4 - t3) << endl;
+	cout << "split " << (t5 - t4) << endl;
+	cout << "gzip " << (t6 - t5) << endl;
+
+	cout << "2(a).error correct " << (t1 - t0) << endl;
+	cout << "2(b).IO " << (t6 - t1) << endl;
 	return 0;
 }
-

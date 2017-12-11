@@ -115,8 +115,6 @@ int main(int argc, char* argv[])
 	int t0 = clock();
 	time_t tt0 = time(NULL);
 
-	cout << "time: " << (tt1 - tt0) << " s" << endl;
-
 	double *vec_buff = new double[uni_cols.size()];
 	for (int i = 0; i < NUM_OF_CELLS; ++i)
 	{
@@ -133,7 +131,6 @@ int main(int argc, char* argv[])
 
 	
 	cout << "time: " << (time(NULL) - tt0) << " s" << endl;
-	cout << "DONE" << endl;
 
 	string pwise_dist_file = SAVE_DIR + "pwise_dist_L1.txt";
 	fp = fopen(pwise_dist_file.c_str(), "w");

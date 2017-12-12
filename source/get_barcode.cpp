@@ -596,14 +596,15 @@ int main(int argc, char *argv[])
 	for (int i = 0; i < num_barcodes; ++i)
 	{
 		dist[i][i] = (BARCODE_LENGTH + 1)*4;
+		#pragma omp parallel for num_threads(NUM_THREADS)
 		for (int j = i + 1; j < num_barcodes; ++j)
 		{
 			decode_cstr(codewords[i], BARCODE_LENGTH, buffa);
 			decode_cstr(codewords[j], BARCODE_LENGTH, buffb);
-			dist[i][j] = hammingEval.slowDistance(buffa, buffb, BARCODE_LENGTH, BARCODE_LENGTH);
-			//nacgt<uint64_t> bar_a(buffa, BARCODE_LENGTH);
-			//nacgt<uint64_t> bar_b(buffb, BARCODE_LENGTH);
-			//dist[i][j] = hammingEval.distance(&bar_a, &bar_b, BARCODE_LENGTH);
+			//dist[i][j] = hammingEval.slowDistance(buffa, buffb, BARCODE_LENGTH, BARCODE_LENGTH);
+			nacgt<uint64_t> bar_a(buffa, BARCODE_LENGTH);
+			nacgt<uint64_t> bar_b(buffb, BARCODE_LENGTH);
+			dist[i][j] = hammingEval.distance(&bar_a, &bar_b, BARCODE_LENGTH);
 			dist[j][i] = dist[i][j];
 		}
 	}
